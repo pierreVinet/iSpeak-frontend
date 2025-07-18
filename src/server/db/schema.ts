@@ -23,8 +23,6 @@ export const createTable = pgTableCreator((name) => `${name}`);
 
 /*  ####################################### ENUMS ######################################  */
 
-export const genderEnum = pgEnum("gender", ["male", "female", "other"]);
-
 /*  ####################################### AUTH ######################################  */
 
 export const users = createTableAuth("user", {

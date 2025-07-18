@@ -49,13 +49,17 @@ const TabsAnalysis = ({
 
   // Memoize the audio URL to prevent creating new URLs on every render
   const audioUrl = useMemo(() => {
-    return file ? URL.createObjectURL(file) : null;
+    // Only create object URL in the browser environment
+    if (typeof window !== "undefined" && file) {
+      return URL.createObjectURL(file);
+    }
+    return null;
   }, [file]);
 
   // Clean up the URL object when component unmounts or file changes
   useEffect(() => {
     return () => {
-      if (audioUrl) {
+      if (audioUrl && typeof window !== "undefined") {
         URL.revokeObjectURL(audioUrl);
       }
     };
