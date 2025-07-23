@@ -4,6 +4,7 @@ import { signOut } from "next-auth/react";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
+import posthog from "posthog-js";
 
 export default function SignOutButton() {
   const [loading, setLoading] = useState(false);
@@ -11,6 +12,7 @@ export default function SignOutButton() {
   const handleSignOut = async () => {
     setLoading(true);
     try {
+      posthog.reset();
       await signOut({
         redirect: true,
         callbackUrl: "/auth/signin",
