@@ -34,7 +34,10 @@ export function IntelligibilityScoreCard({
     scores.sentences_wer || scores.sentences_wer === 0
       ? (1 - scores.sentences_wer) * 100
       : 0;
-  const overallScore = scores.total_wer ? (1 - scores.total_wer) * 100 : 0;
+  const overallScore =
+    scores.total_wer || scores.total_wer === 0
+      ? (1 - scores.total_wer) * 100
+      : 0;
 
   return (
     <Card className="w-full">

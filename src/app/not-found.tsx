@@ -8,8 +8,8 @@ const NotFound = () => {
   return (
     <main className="w-full min-h-screen flex flex-col items-center justify-center px-4 sm:px-20 p-4 gap-6">
       <LLUIiSpeakLogo />
-      <h1 className="text-4xl font-bold">404 - Page Not Found</h1>
-      <p className="text-lg text-gray-600">
+      <h1 className="text-4xl font-bold text-center">404 - Page Not Found</h1>
+      <p className="text-lg text-gray-600 text-center">
         The page you are looking for does not exist.
       </p>
       <Button asChild>

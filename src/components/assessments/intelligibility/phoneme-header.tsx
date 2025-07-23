@@ -23,13 +23,13 @@ const PhonemeHeader = ({
       <div className="flex flex-row justify-between">
         <div className="flex flex-col gap-1.5">
           <CardTitle className="text-lg font-semibold">
-            {title} {totalPhonemes && !showMore && `(${totalPhonemes})`}
+            {title} {totalPhonemes && !showMore ? `(${totalPhonemes})` : null}
           </CardTitle>
           <p className="text-sm text-muted-foreground">{description}</p>
         </div>
         {showMore && (
           <PhonemeShowMoreButton assessmentId={assessmentId}>
-            Show More {totalPhonemes && `(${totalPhonemes})`}
+            Show More {totalPhonemes ? `(${totalPhonemes})` : null}
           </PhonemeShowMoreButton>
         )}
       </div>

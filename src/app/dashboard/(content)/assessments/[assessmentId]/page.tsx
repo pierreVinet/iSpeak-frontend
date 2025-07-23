@@ -45,6 +45,8 @@ export default async function AssessmentPage({ params }: AssessmentPageProps) {
   if (!assessment) {
     return <NotFoundAssessment assessmentId={assessmentId} />;
   }
+
+  console.log(assessment);
   const patient = patients.find(
     (patient) => patient.id === assessment.metadata.patient_id
   );
