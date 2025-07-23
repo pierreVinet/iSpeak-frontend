@@ -30,6 +30,8 @@ export default function SignIn() {
         redirect: false,
       });
 
+      console.log("signin", result);
+
       if (result?.error) {
         setError("Invalid credentials");
         setLoading(false);
