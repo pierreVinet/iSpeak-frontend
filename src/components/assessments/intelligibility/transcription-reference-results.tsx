@@ -57,11 +57,11 @@ const TranscriptionReferenceResults = ({
               <div key={rowIndex} className="space-y-3">
                 <div className="flex gap-4">
                   {/* Labels column */}
-                  <div className="flex flex-col justify-between w-20 text-left">
-                    <div className="text-xs font-medium text-gray-600 uppercase tracking-wide">
+                  <div className="flex flex-col justify-start w-16 text-left">
+                    <div className="text-xs text-gray-600 tracking-wide mb-2.5 mt-1.5 font-bold">
                       Patient
                     </div>
-                    <div className="text-xs font-medium text-gray-600 uppercase tracking-wide">
+                    <div className="text-xs text-gray-600 tracking-wide">
                       Reference
                     </div>
                   </div>
@@ -69,30 +69,8 @@ const TranscriptionReferenceResults = ({
                   {/* Vertical separator */}
                   <div className="w-px bg-gray-200 self-stretch mx-2"></div>
 
-                  {/* Content area with responsive flex layout */}
+                  {/* Content area with grouped transcription-reference blocks */}
                   <div className="flex-1 min-w-0">
-                    {/* Patient transcription row */}
-                    <div className="flex flex-wrap gap-4 mb-2">
-                      {rowItems.map((item, index) => (
-                        <div
-                          key={index}
-                          className={`${
-                            mode === "word"
-                              ? "min-w-[120px] max-w-[200px] flex-1"
-                              : "min-w-[200px] max-w-[400px] flex-1"
-                          }`}
-                        >
-                          <div
-                            className={`font-mono text-base ${
-                              item.correct ? "text-green-600" : "text-red-600"
-                            } font-medium break-words hyphens-auto`}
-                          >
-                            {item.transcription}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    {/* Reference row */}
                     <div className="flex flex-wrap gap-4">
                       {rowItems.map((item, index) => (
                         <div
@@ -101,8 +79,17 @@ const TranscriptionReferenceResults = ({
                             mode === "word"
                               ? "min-w-[120px] max-w-[200px] flex-1"
                               : "min-w-[200px] max-w-[400px] flex-1"
-                          }`}
+                          } space-y-1`}
                         >
+                          {/* Patient transcription */}
+                          <div
+                            className={`font-mono text-base ${
+                              item.correct ? "text-green-600" : "text-red-600"
+                            } font-medium break-words hyphens-auto`}
+                          >
+                            {item.transcription}
+                          </div>
+                          {/* Reference text */}
                           <div className="font-mono text-sm text-gray-500 break-words hyphens-auto">
                             {item.reference}
                           </div>
