@@ -23,12 +23,16 @@ const TranscriptionReferenceResults = ({
   data,
   title,
   mode,
-  itemsPerRow = 5,
+  itemsPerRow,
 }: TranscriptionReferenceResultsProps) => {
+  // Set default items per row based on mode
+  const defaultItemsPerRow = mode === "word" ? 5 : 2;
+  const maxItemsPerRow = itemsPerRow || defaultItemsPerRow;
+
   return (
     <Card className="border-gray-200 bg-white shadow-sm col-span-1 lg:col-span-2">
       <CardHeader>
-        <CardTitle className="text-lg flex flex-row justify-between items-centertext-gray-900">
+        <CardTitle className="text-lg flex flex-row justify-between items-center text-gray-900">
           {mode === "word"
             ? "Word-Level Assessment"
             : "Sentence-Level Assessment"}
@@ -42,43 +46,74 @@ const TranscriptionReferenceResults = ({
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
-          {/* {mode === "word" ? (
-            // Word-level display with multiple items per row */}
           {Array.from({
-            length: Math.ceil(data.length / itemsPerRow),
+            length: Math.ceil(data.length / maxItemsPerRow),
           }).map((_, rowIndex) => {
             const rowItems = data.slice(
-              rowIndex * itemsPerRow,
-              rowIndex * itemsPerRow + itemsPerRow
+              rowIndex * maxItemsPerRow,
+              rowIndex * maxItemsPerRow + maxItemsPerRow
             );
             return (
-              <div key={rowIndex} className="space-y-2">
-                {/* Transcription words */}
-                <div className="flex gap-6">
-                  {rowItems.map((item, index) => (
-                    <div key={index} className="flex-1">
-                      <div
-                        className={`font-mono text-base ${
-                          item.correct ? "text-green-600" : "text-red-600"
-                        } font-medium`}
-                      >
-                        {item.transcription}
-                      </div>
+              <div key={rowIndex} className="space-y-3">
+                <div className="flex gap-4">
+                  {/* Labels column */}
+                  <div className="flex flex-col justify-between w-20 text-left">
+                    <div className="text-xs font-medium text-gray-600 uppercase tracking-wide">
+                      Patient
                     </div>
-                  ))}
-                </div>
-                {/* Reference words */}
-                <div className="flex gap-6">
-                  {rowItems.map((item, index) => (
-                    <div key={index} className="flex-1">
-                      <div className="font-mono text-sm text-gray-500">
-                        {item.reference}
-                      </div>
+                    <div className="text-xs font-medium text-gray-600 uppercase tracking-wide">
+                      Reference
                     </div>
-                  ))}
+                  </div>
+
+                  {/* Vertical separator */}
+                  <div className="w-px bg-gray-200 self-stretch mx-2"></div>
+
+                  {/* Content area with responsive flex layout */}
+                  <div className="flex-1 min-w-0">
+                    {/* Patient transcription row */}
+                    <div className="flex flex-wrap gap-4 mb-2">
+                      {rowItems.map((item, index) => (
+                        <div
+                          key={index}
+                          className={`${
+                            mode === "word"
+                              ? "min-w-[120px] max-w-[200px] flex-1"
+                              : "min-w-[200px] max-w-[400px] flex-1"
+                          }`}
+                        >
+                          <div
+                            className={`font-mono text-base ${
+                              item.correct ? "text-green-600" : "text-red-600"
+                            } font-medium break-words hyphens-auto`}
+                          >
+                            {item.transcription}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    {/* Reference row */}
+                    <div className="flex flex-wrap gap-4">
+                      {rowItems.map((item, index) => (
+                        <div
+                          key={index}
+                          className={`${
+                            mode === "word"
+                              ? "min-w-[120px] max-w-[200px] flex-1"
+                              : "min-w-[200px] max-w-[400px] flex-1"
+                          }`}
+                        >
+                          <div className="font-mono text-sm text-gray-500 break-words hyphens-auto">
+                            {item.reference}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                {rowIndex < Math.ceil(data.length / itemsPerRow) - 1 && (
-                  <Separator className="my-2" />
+
+                {rowIndex < Math.ceil(data.length / maxItemsPerRow) - 1 && (
+                  <Separator className="my-4" />
                 )}
               </div>
             );
