@@ -5,7 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "@/server/db";
 import { users } from "@/server/db/schema";
 import { User } from "next-auth";
-import PostHogClient from "@/components/analytics/posthog-client";
+import PostHogClient from "@/app/posthog";
 
 export const authOptions: NextAuthOptions = {
   session: {
