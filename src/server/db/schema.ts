@@ -7,6 +7,7 @@ import {
   primaryKey,
   text,
   timestamp,
+  uniqueIndex,
   varchar,
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
@@ -42,35 +43,44 @@ export const users = createTableAuth("user", {
 
 /*  ####################################### WEB APP ######################################  */
 
-export const patients = createTable("patient", {
-  id: varchar("id", { length: 255 })
-    .notNull()
-    .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
-  user_id: varchar("user_id", { length: 255 }).references(() => users.id, {
-    onDelete: "cascade",
-  }),
-  anonymized_id: varchar("anonymized_id", { length: 255 })
-    .unique()
-    .notNull()
-    .$defaultFn(() => crypto.randomUUID()),
-  // name: varchar("name", { length: 255 }),
-  // surname: varchar("surname", { length: 255 }),
-  // date_of_birth: timestamp("date_of_birth", {
-  //   mode: "date",
-  //   withTimezone: true,
-  // }),
-  // gender: genderEnum("gender"),
-  // email: varchar("email", { length: 255 }),
-  // phone: varchar("phone", { length: 255 }),
-  // address: varchar("address", { length: 255 }),
-  notes: text("notes"),
-  created_at: timestamp("created_at", {
-    mode: "date",
-    withTimezone: true,
-  }).default(sql`CURRENT_TIMESTAMP`),
-  updated_at: timestamp("updated_at", {
-    mode: "date",
-    withTimezone: true,
-  }).default(sql`CURRENT_TIMESTAMP`),
-});
+export const patients = createTable(
+  "patient",
+  {
+    id: varchar("id", { length: 255 })
+      .notNull()
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    user_id: varchar("user_id", { length: 255 }).references(() => users.id, {
+      onDelete: "cascade",
+    }),
+    anonymized_id: varchar("anonymized_id", { length: 255 })
+      .notNull()
+      .$defaultFn(() => crypto.randomUUID()),
+    // name: varchar("name", { length: 255 }),
+    // surname: varchar("surname", { length: 255 }),
+    // date_of_birth: timestamp("date_of_birth", {
+    //   mode: "date",
+    //   withTimezone: true,
+    // }),
+    // gender: genderEnum("gender"),
+    // email: varchar("email", { length: 255 }),
+    // phone: varchar("phone", { length: 255 }),
+    // address: varchar("address", { length: 255 }),
+    notes: text("notes"),
+    created_at: timestamp("created_at", {
+      mode: "date",
+      withTimezone: true,
+    }).default(sql`CURRENT_TIMESTAMP`),
+    updated_at: timestamp("updated_at", {
+      mode: "date",
+      withTimezone: true,
+    }).default(sql`CURRENT_TIMESTAMP`),
+  },
+  (table) => ({
+    // Composite unique constraint: anonymized_id must be unique within each user_id
+    userAnonymizedIdUnique: uniqueIndex("user_anonymized_id_unique").on(
+      table.user_id,
+      table.anonymized_id
+    ),
+  })
+);

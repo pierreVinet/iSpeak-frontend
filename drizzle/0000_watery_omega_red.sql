@@ -1,4 +1,4 @@
-CREATE TABLE "patient" (
+CREATE TABLE IF NOT EXISTS "patient" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"user_id" varchar(255),
 	"anonymized_id" varchar(255) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE "patient" (
 	CONSTRAINT "patient_anonymized_id_unique" UNIQUE("anonymized_id")
 );
 --> statement-breakpoint
-CREATE TABLE "auth_user" (
+CREATE TABLE IF NOT EXISTS "auth_user" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"name" varchar(255),
 	"email" varchar(255) NOT NULL,
@@ -18,4 +18,8 @@ CREATE TABLE "auth_user" (
 	CONSTRAINT "auth_user_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
-ALTER TABLE "patient" ADD CONSTRAINT "patient_user_id_auth_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."auth_user"("id") ON DELETE cascade ON UPDATE no action;
+DO $$ BEGIN
+ ALTER TABLE "patient" ADD CONSTRAINT "patient_user_id_auth_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."auth_user"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
