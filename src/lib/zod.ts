@@ -119,13 +119,45 @@ export const AnalysisSegmentsFormSchema = z.object({
   segments: z.array(AnalysisSegmentSchema),
 });
 
-export const formAnalysisModalSchema = z.object({
-  name: z.string().min(1, "Analysis name is required"),
-  type: z.enum(["acoustic", "intelligibility"] as const),
-  referenceType: z.enum(["words", "sentences"] as const),
-  referenceWords: z.string().optional(),
-  referenceSentences: z.string().optional(),
-});
+export const formAnalysisModalSchema = z
+  .object({
+    name: z.string().min(1, "Analysis name is required"),
+    type: z.enum(["acoustic", "intelligibility"] as const),
+    referenceType: z.enum(["words", "sentences"] as const),
+    referenceWords: z.string().optional(),
+    referenceSentences: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      // If type is intelligibility and referenceType is words, require referenceWords
+      if (data.type === "intelligibility" && data.referenceType === "words") {
+        return data.referenceWords && data.referenceWords.trim().length > 0;
+      }
+      return true;
+    },
+    {
+      message: "Reference words are required for intelligibility analysis",
+      path: ["referenceWords"],
+    }
+  )
+  .refine(
+    (data) => {
+      // If type is intelligibility and referenceType is sentences, require referenceSentences
+      if (
+        data.type === "intelligibility" &&
+        data.referenceType === "sentences"
+      ) {
+        return (
+          data.referenceSentences && data.referenceSentences.trim().length > 0
+        );
+      }
+      return true;
+    },
+    {
+      message: "Reference sentences are required for intelligibility analysis",
+      path: ["referenceSentences"],
+    }
+  );
 
 // Schemas for analysis results from the backend
 
