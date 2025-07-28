@@ -72,29 +72,39 @@ const TranscriptionReferenceResults = ({
                   {/* Content area with grouped transcription-reference blocks */}
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap gap-4">
-                      {rowItems.map((item, index) => (
-                        <div
-                          key={index}
-                          className={`${
-                            mode === "word"
-                              ? "min-w-[120px] max-w-[200px] flex-1"
-                              : "min-w-[200px] max-w-[650px] flex-1"
-                          } space-y-1`}
-                        >
-                          {/* Patient transcription */}
+                      {rowItems.map((item, index) => {
+                        const isTranscriptionNotEmpty =
+                          item.transcription.length > 0;
+                        return (
                           <div
-                            className={`font-mono text-base ${
-                              item.correct ? "text-green-600" : "text-red-600"
-                            } font-medium break-words hyphens-auto`}
+                            key={index}
+                            className={`${
+                              mode === "word"
+                                ? "min-w-[120px] max-w-[200px] flex-1"
+                                : "min-w-[200px] max-w-[650px] flex-1"
+                            } space-y-1`}
                           >
-                            {item.transcription}
+                            {/* Patient transcription */}
+                            <div
+                              className={`font-mono text-base min-h-6 ${
+                                isTranscriptionNotEmpty
+                                  ? item.correct
+                                    ? "text-green-600 font-medium"
+                                    : "text-red-600 font-medium"
+                                  : "text-gray-500 italic"
+                              }  break-words hyphens-auto`}
+                            >
+                              {isTranscriptionNotEmpty
+                                ? item.transcription
+                                : "[empty]"}
+                            </div>
+                            {/* Reference text */}
+                            <div className="font-mono text-sm text-gray-500 break-words hyphens-auto">
+                              {item.reference}
+                            </div>
                           </div>
-                          {/* Reference text */}
-                          <div className="font-mono text-sm text-gray-500 break-words hyphens-auto">
-                            {item.reference}
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
