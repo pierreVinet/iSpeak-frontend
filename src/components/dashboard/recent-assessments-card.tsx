@@ -60,7 +60,7 @@ const RecentAssessmentsCard = ({
               return (
                 <Link
                   key={assessment.metadata.job_id}
-                  href={`/assessments/${assessment.metadata.job_id}`}
+                  href={`/dashboard/assessments/${assessment.metadata.job_id}`}
                   className="block"
                 >
                   <div className="flex items-center gap-4 justify-between p-4 rounded-lg border hover:bg-muted/50 transition-colors">
