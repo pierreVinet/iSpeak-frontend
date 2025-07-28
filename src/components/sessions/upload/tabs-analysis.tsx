@@ -241,7 +241,7 @@ const TabsAnalysis = ({
         <Button
           className="bg-blue-600 hover:bg-blue-700"
           onClick={handleStartAnalysis}
-          disabled={analysisSegments.length === 0}
+          disabled={analysisSegments.length === 0 || !!selectedRange}
         >
           Start Analysis
         </Button>

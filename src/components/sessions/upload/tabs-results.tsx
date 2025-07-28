@@ -35,78 +35,6 @@ const TabsResults = () => {
     }
   };
 
-  // const handleDownload = () => {
-  //   if (!result) return;
-
-  //   // Create downloadable content
-  //   const content = {
-  //     jobId: result.job_id,
-  //     filename: result.filename,
-  //     transcript: result.transcript,
-  //     formants: result.formants,
-  //     timestamp: new Date().toISOString(),
-  //   };
-
-  //   const blob = new Blob([JSON.stringify(content, null, 2)], {
-  //     type: "application/json",
-  //   });
-
-  //   const url = URL.createObjectURL(blob);
-  //   const a = document.createElement("a");
-  //   a.href = url;
-  //   a.download = `analysis-results-${result.job_id.slice(0, 8)}.json`;
-  //   document.body.appendChild(a);
-  //   a.click();
-  //   document.body.removeChild(a);
-  //   URL.revokeObjectURL(url);
-  // };
-
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const sizes = ["Bytes", "KB", "MB", "GB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
-  };
-
-  const getFileIcon = (file: File) => {
-    if (file.type.startsWith("video/")) {
-      return <FileVideo className="h-6 w-6 text-gray-500" />;
-    } else if (file.type.startsWith("audio/")) {
-      return <Music className="h-6 w-6 text-gray-500" />;
-    } else {
-      return <File className="h-6 w-6 text-gray-500" />;
-    }
-  };
-
-  const getStatusBadge = () => {
-    if (state.isCompleted) {
-      return (
-        <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-          Completed
-        </Badge>
-      );
-    } else if (state.isProcessing) {
-      return (
-        <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">
-          Processing
-        </Badge>
-      );
-    } else if (state.error) {
-      return (
-        <Badge className="bg-red-100 text-red-800 hover:bg-red-100">
-          Error
-        </Badge>
-      );
-    } else {
-      return (
-        <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-100">
-          Ready
-        </Badge>
-      );
-    }
-  };
-
   // Handle jobId to listen to existing job or start new analysis
   useEffect(() => {
     if (
@@ -150,37 +78,6 @@ const TabsResults = () => {
 
   return (
     <TabsContent value="results" className="space-y-6 mt-6 pb-20">
-      {/* File Information Card */}
-      {/* <Card className="border-gray-200 bg-white shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-lg text-gray-900">
-            File Processing
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-start gap-4">
-            <div className="rounded-lg bg-gray-100 p-3">
-              {getFileIcon(file)}
-            </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="text-base font-medium text-gray-900 truncate">
-                {file.name}
-              </h3>
-              <div className="flex items-center gap-4 mt-1 text-sm text-gray-600">
-                <span>{formatFileSize(file.size)}</span>
-                <span>{file.type}</span>
-                {getStatusBadge()}
-              </div>
-              {jobId && (
-                <p className="text-xs text-gray-500 mt-1 font-mono">
-                  Job ID: {jobId}
-                </p>
-              )}
-            </div>
-          </div>
-        </CardContent>
-      </Card> */}
-
       {/* Processing Status */}
       <ProcessingStatus
         jobId={jobId || ""}
@@ -192,18 +89,14 @@ const TabsResults = () => {
         handleRetry={handleRetry}
       />
 
-      {/* Analysis Results */}
-      {/* {result && isCompleted && (
-        <AnalysisResults
-          result={result}
-          onDownload={handleDownload}
-          onCopyTranscript={handleCopyTranscript}
-        />
-      )} */}
-
       {/* Action Buttons */}
       <div className="flex justify-between">
-        <Button variant="outline" onClick={handleBack} className="gap-2">
+        <Button
+          variant="outline"
+          onClick={handleBack}
+          className="gap-2"
+          disabled={state.isProcessing}
+        >
           <ArrowLeft className="h-4 w-4" />
           Back
         </Button>

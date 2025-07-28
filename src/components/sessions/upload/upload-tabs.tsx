@@ -10,7 +10,8 @@ import { PatientSelect, RegionTimeRange, UploadTabsNames } from "@/types";
 import { useFileUpload } from "@/contexts/file-upload";
 
 const UploadTabs = ({ patients }: { patients: PatientSelect[] }) => {
-  const { resetAnalysis, activeTab, setActiveTab, step } = useFileUpload();
+  const { resetAnalysis, activeTab, setActiveTab, step, state } =
+    useFileUpload();
 
   // 1) TAB FILE INFO
   const [isDragging, setIsDragging] = useState(false);
@@ -48,6 +49,7 @@ const UploadTabs = ({ patients }: { patients: PatientSelect[] }) => {
         <TabsTrigger
           value="file-info"
           className="cursor-pointer"
+          disabled={state.isProcessing}
           onClick={() => {
             setSelectedRange(null);
           }}
@@ -57,8 +59,7 @@ const UploadTabs = ({ patients }: { patients: PatientSelect[] }) => {
         </TabsTrigger>
         <TabsTrigger
           value="audio-analysis"
-          // disabled={!isProcessed || !isFormCompleted}
-          disabled={step <= 1}
+          disabled={step <= 1 || state.isProcessing}
           className="cursor-pointer"
         >
           <TabsNumber number={2} />
@@ -66,7 +67,6 @@ const UploadTabs = ({ patients }: { patients: PatientSelect[] }) => {
         </TabsTrigger>
         <TabsTrigger
           value="results"
-          // disabled={!isProcessed || !isFormCompleted || !isAnalysisRequested}
           disabled={step <= 2}
           className="cursor-pointer"
           onClick={() => {
