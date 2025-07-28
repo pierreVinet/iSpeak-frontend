@@ -91,7 +91,8 @@ const PhonemeContent = ({
 
   const getBarHeight = (misspellings: number) => {
     if (maxMisspellings === 0) return 0;
-    return (misspellings / maxMisspellings) * 100;
+    // 8% is the minimum height of the bar to be able to see the phoneme count
+    return (misspellings / maxMisspellings) * 92 + 8;
   };
 
   return (

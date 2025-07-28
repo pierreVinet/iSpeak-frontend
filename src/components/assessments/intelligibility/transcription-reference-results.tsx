@@ -78,7 +78,7 @@ const TranscriptionReferenceResults = ({
                           className={`${
                             mode === "word"
                               ? "min-w-[120px] max-w-[200px] flex-1"
-                              : "min-w-[200px] max-w-[400px] flex-1"
+                              : "min-w-[200px] max-w-[650px] flex-1"
                           } space-y-1`}
                         >
                           {/* Patient transcription */}
