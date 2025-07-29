@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  AlertTriangle,
   File,
   FileVideo,
   Loader2,
@@ -8,6 +9,7 @@ import {
   Video,
   X,
 } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -147,6 +149,17 @@ const TabsFile = ({
                 Drag and drop your video or audio file here, or click to browse
               </p>
             </div>
+            {/* Warning Alert */}
+            <Alert
+              variant="destructive"
+              className="border-red-200 bg-red-50 w-96"
+            >
+              <AlertTitle className="">Important Notice</AlertTitle>
+              <AlertDescription className="">
+                Don't upload patient data recording. Please use one of the mock
+                session audios sent to you.
+              </AlertDescription>
+            </Alert>
             <Button
               variant="outline"
               onClick={() => fileInputRef.current?.click()}
