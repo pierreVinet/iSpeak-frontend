@@ -28,14 +28,23 @@ const TranscriptionReferenceResults = ({
   // Set default items per row based on mode
   const defaultItemsPerRow = mode === "word" ? 5 : 2;
   const maxItemsPerRow = itemsPerRow || defaultItemsPerRow;
+  const nbItemsCorrect = data.filter((item) => item.correct === true).length;
+  const nbItems = data.length;
+
+  console.log(nbItemsCorrect, nbItems);
 
   return (
     <Card className="border-gray-200 bg-white shadow-sm col-span-1 lg:col-span-2">
       <CardHeader>
         <CardTitle className="text-lg flex flex-row justify-between items-center text-gray-900">
-          {mode === "word"
-            ? "Word-Level Assessment"
-            : "Sentence-Level Assessment"}
+          <span className="flex flex-row items-center gap-3">
+            {mode === "word"
+              ? "Word-Level Assessment"
+              : "Sentence-Level Assessment"}
+            <span className="text-gray-500 font-mono">
+              {nbItemsCorrect}/{nbItems}
+            </span>
+          </span>
           <Badge className="hidden sm:flex" variant="secondary">
             {title}
           </Badge>
