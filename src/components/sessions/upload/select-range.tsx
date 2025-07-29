@@ -8,6 +8,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import TimeInput from "@/components/ui/time-input";
 import { AddAnalysisModal } from "./add-analysis-modal";
+import posthog from "posthog-js";
 
 const SelectRange = ({
   selectedRange,
@@ -18,6 +19,11 @@ const SelectRange = ({
   segments,
 }: SelectRangeProps) => {
   const [isAddingAnalysis, setIsAddingAnalysis] = useState(false);
+
+  const handleAddAnalysis = () => {
+    posthog.capture("add_analysis_selected_range_button");
+    setIsAddingAnalysis(true);
+  };
 
   const handleTimeRangeChange = (field: "start" | "end", value: number) => {
     const newRange = { ...selectedRange };
@@ -75,7 +81,7 @@ const SelectRange = ({
         </div>
       </LocalizationProvider>
 
-      <Button size="sm" onClick={() => setIsAddingAnalysis(true)}>
+      <Button size="sm" onClick={handleAddAnalysis}>
         Add
       </Button>
 

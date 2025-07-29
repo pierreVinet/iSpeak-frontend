@@ -17,6 +17,7 @@ import { AnalysisSegmentsFormData, AnalysisSegmentsProps } from "@/types";
 import { formatTime, generateId } from "@/lib/utils";
 import { AnalysisSegmentsFormSchema } from "@/lib/zod";
 import SelectRange from "./select-range";
+import posthog from "posthog-js";
 
 const AnalysisSegments = ({
   segments,
@@ -49,6 +50,7 @@ const AnalysisSegments = ({
   };
 
   const handleAddSegment = () => {
+    posthog.capture("add_segment_button");
     // Calculate 5% and 95% of the total duration
     const startTime = duration * 0.05;
     const endTime = duration * 0.25;

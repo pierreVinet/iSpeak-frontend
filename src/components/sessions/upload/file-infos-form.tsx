@@ -4,6 +4,7 @@ import { CalendarIcon, Plus, UserPlus } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { format } from "date-fns";
 import React from "react";
+import posthog from "posthog-js";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -41,11 +42,13 @@ export function SessionForm({ form, patients }: DateNotesFormProps) {
   const [refreshKey, setRefreshKey] = React.useState(0);
 
   const handleCreatePatientFromCombobox = (anonymizedId: string) => {
+    posthog.capture("create_patient_from_combobox");
     setDefaultAnonymizedId(anonymizedId);
     setIsAddPatientDialogOpen(true);
   };
 
   const handleCreatePatientFromButton = () => {
+    posthog.capture("create_patient_from_button");
     setDefaultAnonymizedId(undefined);
     setIsAddPatientDialogOpen(true);
   };
@@ -117,7 +120,12 @@ export function SessionForm({ form, patients }: DateNotesFormProps) {
                         key={refreshKey}
                         patients={patients}
                         value={field.value}
-                        onValueChange={field.onChange}
+                        onValueChange={(e) => {
+                          field.onChange(e);
+                          posthog.capture("select_patient", {
+                            patient_id: e,
+                          });
+                        }}
                         onCreatePatient={handleCreatePatientFromCombobox}
                         placeholder="Select patient..."
                         className="w-full"

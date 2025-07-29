@@ -25,6 +25,7 @@ import { SessionForm } from "./file-infos-form";
 import { cn } from "@/lib/utils";
 import { useFileUpload } from "@/contexts/file-upload";
 import { PatientSelect } from "@/types";
+import posthog from "posthog-js";
 
 const TabsFile = ({
   patients,
@@ -52,6 +53,11 @@ const TabsFile = ({
   const { file, setFile, setActiveTab, setStep, form } = useFileUpload();
 
   const handleFile = (file: File) => {
+    posthog.capture("upload_file", {
+      file_name: file.name,
+      file_size: (file.size ? file.size / (1024 * 1024) : 0).toFixed(2) + " MB",
+      file_type: file.type,
+    });
     if (file.type.startsWith("video/") || file.type.startsWith("audio/")) {
       setFile(file);
       setIsProcessing(true);
@@ -146,7 +152,8 @@ const TabsFile = ({
                 Upload Session Recording
               </h3>
               <p className="text-sm text-gray-600 mt-1">
-                Drag and drop your video or audio file here, or click to browse
+                Drag and drop your video or audio file here, or click to browse.{" "}
+                <b>Max 10MB</b>
               </p>
             </div>
             {/* Warning Alert */}
@@ -204,16 +211,12 @@ const TabsFile = ({
                     {file.name}
                   </h3>
                   <div className="flex flex-wrap gap-x-6 gap-y-2 mt-2 text-sm text-gray-600">
-                    {process.env.NODE_ENV === "development" && (
-                      <div>
-                        <span>
-                          {(file.size ? file.size / (1024 * 1024) : 0).toFixed(
-                            2
-                          )}{" "}
-                          MB
-                        </span>
-                      </div>
-                    )}
+                    <div>
+                      <span>
+                        {(file.size ? file.size / (1024 * 1024) : 0).toFixed(2)}{" "}
+                        MB
+                      </span>
+                    </div>
                     <Badge
                       className={cn(
                         "shrink-0",

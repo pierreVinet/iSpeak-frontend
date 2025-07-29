@@ -11,6 +11,7 @@ import { AudioAnalysisUseCaseError, ProcessingStep } from "@/types";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import ViewAssessmentButton from "./view-assessment-button";
 
 interface ProcessingStatusProps {
   jobId: string;
@@ -137,11 +138,7 @@ export function ProcessingStatus({
                 are now available.
               </p>
             </div>
-            <Button asChild variant="default" className="">
-              <Link href={`/dashboard/assessments/${jobId}`}>
-                View Assessment
-              </Link>
-            </Button>
+            <ViewAssessmentButton jobId={jobId} />
           </div>
         )}
 

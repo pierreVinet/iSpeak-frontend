@@ -47,6 +47,7 @@ import {
 import { analysisTypeDescriptions } from "@/app/dashboard/costants";
 import { formAnalysisModalSchema } from "@/lib/zod";
 import ComingSoonBadge from "@/components/general/coming-soon-badge";
+import posthog from "posthog-js";
 
 type FormData = z.infer<typeof formAnalysisModalSchema>;
 
@@ -125,6 +126,14 @@ export function AddAnalysisModal({
   const timeError = validateTimeRange(selectedRange, duration);
 
   const onSubmit = (data: FormData) => {
+    posthog.capture("add_analysis_modal_submit", {
+      name: data.name,
+      type: data.type,
+      referenceType: data.referenceType,
+      referenceWords: data.referenceWords,
+      referenceSentences: data.referenceSentences,
+    });
+
     if (timeError) return;
 
     let referenceData = undefined;

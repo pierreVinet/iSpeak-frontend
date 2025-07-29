@@ -26,6 +26,7 @@ import { generateId } from "@/lib/utils";
 import { AnalysisRequestWithSegmentsSchema } from "@/lib/zod";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
+import posthog from "posthog-js";
 
 const TabsAnalysis = ({
   isLoading,
@@ -144,6 +145,12 @@ const TabsAnalysis = ({
 
       setStep(3);
       setActiveTab("results");
+      posthog.capture("start_analysis", {
+        analysis_segments_length: analysisSegments.length,
+        analysis_segments_types: analysisSegments.map(
+          (segment) => segment.type
+        ),
+      });
       await startServerAnalysis();
     } catch (err) {
       console.error("Start analysis failed:", err);

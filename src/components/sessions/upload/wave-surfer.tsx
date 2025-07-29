@@ -13,6 +13,7 @@ import React, {
 import { AnalysisSegmentData, WaveSurferWithRegionsProps } from "@/types";
 import { formatTime } from "@/lib/utils";
 import RegionsPlugin from "wavesurfer.js/dist/plugins/regions.esm.js";
+import posthog from "posthog-js";
 
 const WaveSurfer = ({
   audioUrl,
@@ -76,6 +77,11 @@ const WaveSurfer = ({
 
         // Listen for region creation/update
         regionsPlugin.on("region-updated", (region: any) => {
+          posthog.capture("region_updated", {
+            region_id: region.id,
+            region_start: region.start,
+            region_end: region.end,
+          });
           onRegionUpdate(
             {
               start: region.start,
@@ -87,6 +93,11 @@ const WaveSurfer = ({
         });
 
         regionsPlugin.on("region-created", (region: any) => {
+          posthog.capture("region_created", {
+            region_id: region.id,
+            region_start: region.start,
+            region_end: region.end,
+          });
           // Clear any existing regions to allow only one active region
           const regions = regionsPlugin.getRegions();
           const selectRegions = regions.filter((r) =>
