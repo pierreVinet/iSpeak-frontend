@@ -225,6 +225,9 @@ const WaveSurfer = ({
   const handlePlayPause = () => {
     if (!wavesurfer) return;
 
+    posthog.capture("play_pause_button_clicked", {
+      is_playing: isPlaying,
+    });
     try {
       if (isPlaying) {
         wavesurfer.pause();
