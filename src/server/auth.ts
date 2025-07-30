@@ -5,7 +5,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "@/server/db";
 import { users } from "@/server/db/schema";
 import { User } from "next-auth";
-import PostHogClient from "@/app/posthog";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -46,14 +45,6 @@ export const authOptions: NextAuthOptions = {
             throw new Error("Incorrect password");
           }
           const username = user.name || user.email.split("@")[0];
-          const posthog = PostHogClient();
-          posthog.identify({
-            distinctId: user.id,
-            properties: {
-              email: user.email,
-              name: username,
-            },
-          });
           return {
             id: user.id,
             email: user.email,

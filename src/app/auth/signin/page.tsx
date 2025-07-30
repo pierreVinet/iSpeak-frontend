@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,17 +10,33 @@ import Link from "next/link";
 import HeaderAuth from "../components/header-auth";
 import FooterAuth from "../components/footer-auth";
 import PasswordInput from "@/components/auth/password-input";
+import posthog from "posthog-js";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session) {
+      const user = session.user;
+      posthog.identify(user.id, {
+        email: user.email,
+        name: user.name,
+      });
+      router.push("/dashboard");
+      router.refresh();
+    }
+  }, [session]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
     setLoading(true);
 
     try {
@@ -36,13 +52,13 @@ export default function SignIn() {
         setError("Invalid credentials");
         setLoading(false);
       } else {
-        router.push("/dashboard");
-        router.refresh();
+        setSuccess("Login successful! Redirecting...");
       }
     } catch (err) {
       console.error("Sign in error:", err);
       setError("An error occurred. Please try again.");
       setLoading(false);
+      setSuccess("");
     }
   };
 
@@ -99,6 +115,12 @@ export default function SignIn() {
 
             {error && (
               <div className="text-sm text-red-500 text-center">{error}</div>
+            )}
+
+            {success && (
+              <div className="text-sm text-green-500 text-center">
+                {success}
+              </div>
             )}
 
             <Button type="submit" className="w-full h-11" disabled={loading}>
