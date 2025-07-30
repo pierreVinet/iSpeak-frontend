@@ -1,3 +1,4 @@
+import { REGISTER_OPEN } from "@/lib/utils";
 import { createUser } from "@/server/auth";
 import { NextResponse } from "next/server";
 
@@ -9,6 +10,15 @@ export async function POST(req: Request) {
     if (!email || !password) {
       return NextResponse.json(
         { error: "Missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    if (!REGISTER_OPEN) {
+      return NextResponse.json(
+        {
+          error: "Registration is closed",
+        },
         { status: 400 }
       );
     }
