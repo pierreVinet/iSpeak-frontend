@@ -118,7 +118,7 @@ export default function SignIn() {
             )}
 
             {success && (
-              <div className="text-sm text-green-500 text-center">
+              <div className="text-sm text-green-600 text-center">
                 {success}
               </div>
             )}

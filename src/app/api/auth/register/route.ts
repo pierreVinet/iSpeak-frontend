@@ -1,4 +1,4 @@
-import { REGISTER_OPEN } from "@/lib/utils";
+import { REGISTER_OPEN } from "@/lib/config";
 import { createUser } from "@/server/auth";
 import { NextResponse } from "next/server";
 

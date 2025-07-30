@@ -59,6 +59,7 @@ export function PatientCombobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
+          data-testid="patient-select"
           className={cn("w-full justify-between", className)}
         >
           {selectedPatient ? selectedPatient.anonymized_id : placeholder}

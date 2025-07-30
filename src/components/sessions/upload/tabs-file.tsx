@@ -112,6 +112,7 @@ const TabsFile = ({
       {/* File Upload Area */}
       {!!!file ? (
         <div
+          data-testid="file-upload-area"
           className={`border-2 border-dashed rounded-lg p-12 py-20 text-center ${
             isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300"
           }`}
