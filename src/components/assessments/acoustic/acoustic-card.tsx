@@ -175,7 +175,9 @@ const AcousticCard = ({
                 className="text-lg font-bold"
                 style={{ color: metric.color }}
               >
-                {metric.value}
+                {metric.label !== "Voiced"
+                  ? metric.value?.toFixed(2)
+                  : metric.value}
                 <span className="text-xs font-normal text-gray-500 ml-1">
                   {metric.unit}
                 </span>
