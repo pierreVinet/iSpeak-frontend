@@ -1,3 +1,4 @@
+import { type ChartConfig } from "@/components/ui/chart";
 import {
   ProcessingStepSchema,
   StatusUpdateSchema,
@@ -257,3 +258,19 @@ export type PatientSelect = z.infer<typeof PatientSelectSchema>;
 export type IntelligibilityResultData = z.infer<
   typeof IntelligibilityResultSchema
 >;
+
+export interface ScalarMetric {
+  label: string;
+  value: number;
+  unit: string;
+  color: string;
+}
+
+export interface AcousticCardProps {
+  title: string;
+  description: string;
+  scalars: ScalarMetric[];
+  chartData: any[];
+  chartConfig: ChartConfig;
+  chartType: "line" | "area" | "formants";
+}

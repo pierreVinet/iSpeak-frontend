@@ -12,6 +12,7 @@ import {
 import { Card } from "@/components/ui/card";
 import PhonemeHeader from "./phoneme-header";
 import PhonemeContent from "./phoneme-content";
+import TypeHeader from "../type-header";
 
 interface IntelligibilitySectionProps {
   assessment: AnalysisResultData;
@@ -36,12 +37,10 @@ export function IntelligibilitySection({
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">Intelligibility</h2>
-        <p className="text-muted-foreground">
-          Analysis of speech clarity and phonetic accuracy
-        </p>
-      </div>
+      <TypeHeader
+        title="Intelligibility"
+        description="Analysis of speech clarity and phonetic accuracy"
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <IntelligibilityScoreCard scores={intelligibility_scores} />
