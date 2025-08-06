@@ -172,31 +172,31 @@ const AcousticSection = ({ assessment }: AcousticSectionProps) => {
     ? [
         {
           label: "F1 Mean",
-          value: Math.round(acousticData.formants.F1.mean),
+          value: Math.round(acousticData.formants.F1.mean * 100) / 100,
           unit: "Hz",
           color: "var(--chart-1)",
         },
         {
           label: "F2 Mean",
-          value: Math.round(acousticData.formants.F2.mean),
+          value: Math.round(acousticData.formants.F2.mean * 100) / 100,
           unit: "Hz",
           color: "var(--chart-2)",
         },
         {
           label: "F3 Mean",
-          value: Math.round(acousticData.formants.F3.mean),
+          value: Math.round(acousticData.formants.F3.mean * 100) / 100,
           unit: "Hz",
           color: "var(--chart-3)",
         },
         {
           label: "F4 Mean",
-          value: Math.round(acousticData.formants.F4.mean),
+          value: Math.round(acousticData.formants.F4.mean * 100) / 100,
           unit: "Hz",
           color: "var(--chart-4)",
         },
         {
           label: "F5 Mean",
-          value: Math.round(acousticData.formants.F5.mean),
+          value: Math.round(acousticData.formants.F5.mean * 100) / 100,
           unit: "Hz",
           color: "var(--chart-5)",
         },

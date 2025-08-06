@@ -52,6 +52,15 @@ const AcousticCard = ({
 }: AcousticCardProps) => {
   const renderChart = () => {
     if (chartType === "formants") {
+      // Extract formant mean values from scalars for reference lines
+      const formantMeans = scalars.reduce((acc, scalar) => {
+        const match = scalar.label.match(/^(F[1-5]) Mean$/);
+        if (match) {
+          acc[match[1]] = scalar.value;
+        }
+        return acc;
+      }, {} as Record<string, number>);
+
       return (
         <ChartContainer config={chartConfig} className="max-h-[400px] w-full">
           <RechartsPrimitive.LineChart data={chartData}>
@@ -79,6 +88,7 @@ const AcousticCard = ({
               content={<ChartTooltipContent />}
               labelFormatter={(value) => `Formants`}
             />
+            {/* Formant data lines */}
             {["F1", "F2", "F3", "F4", "F5"].map((formant) =>
               createFormantLine({
                 dataKey: formant,
@@ -86,6 +96,17 @@ const AcousticCard = ({
                 stroke: `var(--color-${formant})`,
               })
             )}
+            {/* Horizontal reference lines for formant means */}
+            {Object.entries(formantMeans).map(([formant, meanValue]) => (
+              <RechartsPrimitive.ReferenceLine
+                key={`${formant}-mean`}
+                y={meanValue}
+                stroke={`var(--color-${formant})`}
+                strokeDasharray="3 3"
+                strokeWidth={1}
+                strokeOpacity={0.7}
+              />
+            ))}
           </RechartsPrimitive.LineChart>
         </ChartContainer>
       );
