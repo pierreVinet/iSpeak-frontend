@@ -14,7 +14,6 @@ import {
   UseAudioAnalysisState,
   ErrorCallback,
   AnalysisSegment,
-  AnalysisMetadata,
   FormSessionSmallData,
 } from "@/types";
 import {
