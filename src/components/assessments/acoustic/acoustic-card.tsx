@@ -17,6 +17,31 @@ import { Separator } from "@/components/ui/separator";
 import { AcousticCardProps } from "@/types";
 import { cn } from "@/lib/utils";
 
+interface FormantLineProps {
+  dataKey: string;
+  name: string;
+  stroke: string;
+}
+
+const createFormantLine = ({ dataKey, name, stroke }: FormantLineProps) => (
+  <RechartsPrimitive.Line
+    key={dataKey}
+    type="monotone"
+    isAnimationActive={false}
+    dataKey={dataKey}
+    name={name}
+    stroke={stroke}
+    strokeWidth={0}
+    dot={{
+      fill: stroke,
+      r: 2,
+    }}
+    activeDot={{
+      r: 4,
+    }}
+  />
+);
+
 const AcousticCard = ({
   title,
   description,
@@ -41,76 +66,13 @@ const AcousticCard = ({
               content={<ChartTooltipContent />}
               labelFormatter={(value) => `Formants`}
             />
-            <RechartsPrimitive.Line
-              type="monotone"
-              dataKey="F1"
-              name="F1 (Hz)"
-              stroke="var(--color-F1)"
-              strokeWidth={0}
-              dot={{
-                fill: "var(--color-F1)",
-                r: 2,
-              }}
-              activeDot={{
-                r: 4,
-              }}
-            />
-            <RechartsPrimitive.Line
-              type="monotone"
-              dataKey="F2"
-              name="F2 (Hz)"
-              stroke="var(--color-F2)"
-              strokeWidth={0}
-              dot={{
-                fill: "var(--color-F2)",
-                r: 2,
-              }}
-              activeDot={{
-                r: 4,
-              }}
-            />
-            <RechartsPrimitive.Line
-              type="monotone"
-              dataKey="F3"
-              name="F3 (Hz)"
-              stroke="var(--color-F3)"
-              strokeWidth={0}
-              dot={{
-                fill: "var(--color-F3)",
-                r: 2,
-              }}
-              activeDot={{
-                r: 4,
-              }}
-            />
-            <RechartsPrimitive.Line
-              type="monotone"
-              dataKey="F4"
-              stroke="var(--color-F4)"
-              name="F4 (Hz)"
-              strokeWidth={0}
-              dot={{
-                fill: "var(--color-F4)",
-                r: 2,
-              }}
-              activeDot={{
-                r: 4,
-              }}
-            />
-            <RechartsPrimitive.Line
-              type="monotone"
-              dataKey="F5"
-              name="F5 (Hz)"
-              stroke="var(--color-F5)"
-              strokeWidth={0}
-              dot={{
-                fill: "var(--color-F5)",
-                r: 2,
-              }}
-              activeDot={{
-                r: 4,
-              }}
-            />
+            {["F1", "F2", "F3", "F4", "F5"].map((formant) =>
+              createFormantLine({
+                dataKey: formant,
+                name: `${formant} (Hz)`,
+                stroke: `var(--color-${formant})`,
+              })
+            )}
           </RechartsPrimitive.LineChart>
         </ChartContainer>
       );
