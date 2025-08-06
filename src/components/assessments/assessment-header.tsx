@@ -4,7 +4,7 @@ import { Clock, User } from "lucide-react";
 import { AnalysisResultData, PatientSelect } from "@/types";
 import { getAuthSession } from "@/server/auth";
 import { User as UserAuth } from "next-auth";
-import { formatTime } from "@/lib/utils";
+import { formatDate, formatTime } from "@/lib/utils";
 
 interface AssessmentHeaderProps {
   assessment: AnalysisResultData;
@@ -17,23 +17,6 @@ export async function AssessmentHeader({
   user,
   patient,
 }: AssessmentHeaderProps) {
-  const formatDuration = (minutes: number) => {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    if (hours > 0) {
-      return `${hours}h ${mins}min`;
-    }
-    return `${mins}min`;
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
   return (
     <Card className="w-full">
       <CardHeader>
@@ -75,7 +58,7 @@ export async function AssessmentHeader({
               className="text-sm bg-blue-100 text-blue-900 border-blue-200"
             >
               {assessment.metadata.date
-                ? formatDate(assessment.metadata.date)
+                ? formatDate(assessment.metadata.date, true)
                 : "No date"}
             </Badge>
           </div>
