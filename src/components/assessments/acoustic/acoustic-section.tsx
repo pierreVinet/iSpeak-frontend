@@ -20,7 +20,10 @@ const AcousticSection = ({ assessment }: AcousticSectionProps) => {
   const f0ChartData = acousticData.fundamental_frequency?.time_series.time.map(
     (time, index) => ({
       time,
-      value: acousticData.fundamental_frequency?.time_series.frequency[index],
+      value:
+        acousticData.fundamental_frequency?.time_series.frequency[index] === 0
+          ? null
+          : acousticData.fundamental_frequency?.time_series.frequency[index],
     })
   );
 
@@ -67,7 +70,10 @@ const AcousticSection = ({ assessment }: AcousticSectionProps) => {
   const intensityChartData = acousticData.intensity?.time_series.time.map(
     (time, index) => ({
       time,
-      value: acousticData.intensity?.time_series.intensity[index],
+      value: Math.max(
+        acousticData.intensity?.time_series.intensity[index] ?? 0,
+        0
+      ),
     })
   );
 
@@ -111,11 +117,31 @@ const AcousticSection = ({ assessment }: AcousticSectionProps) => {
   const formantsChartData = acousticData.formants?.time_series.time.map(
     (time, index) => ({
       time,
-      F1: acousticData.formants?.time_series.F1[index],
-      F2: acousticData.formants?.time_series.F2[index],
-      F3: acousticData.formants?.time_series.F3[index],
-      F4: acousticData.formants?.time_series.F4[index],
-      F5: acousticData.formants?.time_series.F5[index],
+      F1:
+        acousticData.formants?.time_series.F1[index] === 0 ||
+        acousticData.fundamental_frequency?.time_series.frequency[index] === 0
+          ? null
+          : acousticData.formants?.time_series.F1[index],
+      F2:
+        acousticData.formants?.time_series.F2[index] === 0 ||
+        acousticData.fundamental_frequency?.time_series.frequency[index] === 0
+          ? null
+          : acousticData.formants?.time_series.F2[index],
+      F3:
+        acousticData.formants?.time_series.F3[index] === 0 ||
+        acousticData.fundamental_frequency?.time_series.frequency[index] === 0
+          ? null
+          : acousticData.formants?.time_series.F3[index],
+      F4:
+        acousticData.formants?.time_series.F4[index] === 0 ||
+        acousticData.fundamental_frequency?.time_series.frequency[index] === 0
+          ? null
+          : acousticData.formants?.time_series.F4[index],
+      F5:
+        acousticData.formants?.time_series.F5[index] === 0 ||
+        acousticData.fundamental_frequency?.time_series.frequency[index] === 0
+          ? null
+          : acousticData.formants?.time_series.F5[index],
     })
   );
 
@@ -130,7 +156,7 @@ const AcousticSection = ({ assessment }: AcousticSectionProps) => {
     },
     F3: {
       label: "F3",
-      color: "(var(--chart-3)",
+      color: "var(--chart-3)",
     },
     F4: {
       label: "F4",
@@ -168,6 +194,12 @@ const AcousticSection = ({ assessment }: AcousticSectionProps) => {
           unit: "Hz",
           color: "var(--chart-4)",
         },
+        {
+          label: "F5 Mean",
+          value: Math.round(acousticData.formants.F5.mean),
+          unit: "Hz",
+          color: "var(--chart-5)",
+        },
       ]
     : undefined;
 
@@ -188,6 +220,26 @@ const AcousticSection = ({ assessment }: AcousticSectionProps) => {
             chartData={f0ChartData as any[]}
             chartConfig={f0ChartConfig}
             chartType="line"
+          />
+        )}
+        {isIntensity && (
+          <AcousticCard
+            title="Intensity"
+            description="Voice loudness and amplitude characteristics"
+            scalars={intensityScalars as ScalarMetric[]}
+            chartData={intensityChartData as any[]}
+            chartConfig={intensityChartConfig}
+            chartType="area"
+          />
+        )}
+        {isFormants && (
+          <AcousticCard
+            title="Formants (F1-F5)"
+            description="Vocal tract resonance frequencies"
+            scalars={formantScalars as ScalarMetric[]}
+            chartData={formantsChartData as any[]}
+            chartConfig={formantsChartConfig}
+            chartType="formants"
           />
         )}
       </div>

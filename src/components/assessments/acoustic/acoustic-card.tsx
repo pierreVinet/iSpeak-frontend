@@ -15,6 +15,7 @@ import {
 import * as RechartsPrimitive from "recharts";
 import { Separator } from "@/components/ui/separator";
 import { AcousticCardProps } from "@/types";
+import { cn } from "@/lib/utils";
 
 const AcousticCard = ({
   title,
@@ -27,7 +28,7 @@ const AcousticCard = ({
   const renderChart = () => {
     if (chartType === "formants") {
       return (
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={chartConfig} className="max-h-[400px] w-full">
           <RechartsPrimitive.LineChart data={chartData}>
             <RechartsPrimitive.XAxis
               dataKey="time"
@@ -38,54 +39,84 @@ const AcousticCard = ({
             />
             <ChartTooltip
               content={<ChartTooltipContent />}
-              labelFormatter={(value) => `Time: ${Number(value).toFixed(2)}s`}
+              labelFormatter={(value) => `Formants`}
             />
             <RechartsPrimitive.Line
               type="monotone"
               dataKey="F1"
-              stroke="var(--color-F1)"
-              strokeWidth={2}
-              dot={false}
               name="F1 (Hz)"
+              stroke="var(--color-F1)"
+              strokeWidth={0}
+              dot={{
+                fill: "var(--color-F1)",
+                r: 2,
+              }}
+              activeDot={{
+                r: 4,
+              }}
             />
             <RechartsPrimitive.Line
               type="monotone"
               dataKey="F2"
-              stroke="var(--color-F2)"
-              strokeWidth={2}
-              dot={false}
               name="F2 (Hz)"
+              stroke="var(--color-F2)"
+              strokeWidth={0}
+              dot={{
+                fill: "var(--color-F2)",
+                r: 2,
+              }}
+              activeDot={{
+                r: 4,
+              }}
             />
             <RechartsPrimitive.Line
               type="monotone"
               dataKey="F3"
-              stroke="var(--color-F3)"
-              strokeWidth={2}
-              dot={false}
               name="F3 (Hz)"
+              stroke="var(--color-F3)"
+              strokeWidth={0}
+              dot={{
+                fill: "var(--color-F3)",
+                r: 2,
+              }}
+              activeDot={{
+                r: 4,
+              }}
             />
             <RechartsPrimitive.Line
               type="monotone"
               dataKey="F4"
               stroke="var(--color-F4)"
-              strokeWidth={2}
-              dot={false}
               name="F4 (Hz)"
+              strokeWidth={0}
+              dot={{
+                fill: "var(--color-F4)",
+                r: 2,
+              }}
+              activeDot={{
+                r: 4,
+              }}
             />
             <RechartsPrimitive.Line
               type="monotone"
               dataKey="F5"
-              stroke="var(--color-F5)"
-              strokeWidth={2}
-              dot={false}
               name="F5 (Hz)"
+              stroke="var(--color-F5)"
+              strokeWidth={0}
+              dot={{
+                fill: "var(--color-F5)",
+                r: 2,
+              }}
+              activeDot={{
+                r: 4,
+              }}
             />
           </RechartsPrimitive.LineChart>
         </ChartContainer>
       );
     } else if (chartType === "area") {
       return (
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={chartConfig} className="max-h-[400px] w-full">
           <RechartsPrimitive.AreaChart data={chartData}>
             <RechartsPrimitive.XAxis
               dataKey="time"
@@ -95,17 +126,31 @@ const AcousticCard = ({
               tickFormatter={(value) => `${value.toFixed(1)}`}
             />
             <ChartTooltip
-              content={<ChartTooltipContent />}
-              labelFormatter={(value) => `Time: ${Number(value).toFixed(2)}s`}
+              content={<ChartTooltipContent indicator="line" hideLabel />}
+              // labelFormatter={(value) => `Time: ${Number(value).toFixed(2)}s`}
             />
             <RechartsPrimitive.Area
               type="monotone"
               dataKey="value"
               stroke={Object.values(chartConfig)[0]?.color}
-              fill={Object.values(chartConfig)[0]?.color}
+              fill="url(#fillIntensity)"
               fillOpacity={0.3}
               strokeWidth={2}
             />
+            <defs>
+              <linearGradient id="fillIntensity" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="5%"
+                  stopColor={Object.values(chartConfig)[0]?.color}
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor={Object.values(chartConfig)[0]?.color}
+                  stopOpacity={0.1}
+                />
+              </linearGradient>
+            </defs>
           </RechartsPrimitive.AreaChart>
         </ChartContainer>
       );
@@ -162,7 +207,12 @@ const AcousticCard = ({
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Scalar Metrics */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div
+          className={cn(
+            "grid grid-cols-2 gap-3",
+            chartType === "formants" ? "md:grid-cols-5" : "md:grid-cols-4"
+          )}
+        >
           {scalars.map((metric, index) => (
             <div
               key={index}
