@@ -66,7 +66,8 @@ const AcousticCard = ({
           <RechartsPrimitive.LineChart data={chartData}>
             <RechartsPrimitive.XAxis
               dataKey="time"
-              tickFormatter={(value) => `${value.toFixed(1)}s`}
+              tickFormatter={(value) => `${value.toFixed(1)}`}
+              minTickGap={50}
             >
               <RechartsPrimitive.Label
                 value="Time (s)"
@@ -116,7 +117,8 @@ const AcousticCard = ({
           <RechartsPrimitive.AreaChart data={chartData}>
             <RechartsPrimitive.XAxis
               dataKey="time"
-              tickFormatter={(value) => `${value.toFixed(1)}s`}
+              tickFormatter={(value) => `${value.toFixed(1)}`}
+              minTickGap={50}
             >
               <RechartsPrimitive.Label
                 value="Time (s)"
