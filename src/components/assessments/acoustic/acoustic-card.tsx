@@ -58,10 +58,23 @@ const AcousticCard = ({
             <RechartsPrimitive.XAxis
               dataKey="time"
               tickFormatter={(value) => `${value.toFixed(1)}s`}
-            />
+            >
+              <RechartsPrimitive.Label
+                value="Time (s)"
+                offset={0}
+                position="insideBottom"
+              />
+            </RechartsPrimitive.XAxis>
             <RechartsPrimitive.YAxis
               tickFormatter={(value) => `${value.toFixed(0)}`}
-            />
+            >
+              <RechartsPrimitive.Label
+                value="Frequency (Hz)"
+                offset={0}
+                position="insideLeft"
+                angle={-90}
+              />
+            </RechartsPrimitive.YAxis>
             <ChartTooltip
               content={<ChartTooltipContent />}
               labelFormatter={(value) => `Formants`}
@@ -83,10 +96,23 @@ const AcousticCard = ({
             <RechartsPrimitive.XAxis
               dataKey="time"
               tickFormatter={(value) => `${value.toFixed(1)}s`}
-            />
+            >
+              <RechartsPrimitive.Label
+                value="Time (s)"
+                offset={0}
+                position="insideBottom"
+              />
+            </RechartsPrimitive.XAxis>
             <RechartsPrimitive.YAxis
               tickFormatter={(value) => `${value.toFixed(1)}`}
-            />
+            >
+              <RechartsPrimitive.Label
+                value="Intensity (dB)"
+                offset={0}
+                position="insideLeft"
+                angle={-90}
+              />
+            </RechartsPrimitive.YAxis>
             <ChartTooltip
               content={<ChartTooltipContent indicator="line" hideLabel />}
               // labelFormatter={(value) => `Time: ${Number(value).toFixed(2)}s`}
@@ -131,7 +157,13 @@ const AcousticCard = ({
               dataKey="time"
               tickFormatter={(value) => `${value.toFixed(1)}`}
               minTickGap={50}
-            />
+            >
+              <RechartsPrimitive.Label
+                value="Time (s)"
+                offset={0}
+                position="insideBottom"
+              />
+            </RechartsPrimitive.XAxis>
             <RechartsPrimitive.YAxis
               tickFormatter={(value) => `${value.toFixed(1)}`}
               type="number"
@@ -141,7 +173,14 @@ const AcousticCard = ({
                 (dataMax: number) => dataMax + 5,
               ]}
               //   interval="preserveStartEnd"
-            />
+            >
+              <RechartsPrimitive.Label
+                value="Frequency (Hz)"
+                offset={0}
+                position="insideLeft"
+                angle={-90}
+              />
+            </RechartsPrimitive.YAxis>
             <ChartTooltip
               content={<ChartTooltipContent indicator="line" hideLabel />}
               //   labelFormatter={(value) => `Time: ${value}s`}
