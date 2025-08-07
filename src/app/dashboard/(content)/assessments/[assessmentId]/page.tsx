@@ -57,7 +57,7 @@ export default async function AssessmentPage({ params }: AssessmentPageProps) {
   const isAcoustic = assessment.metadata.analysis_types.includes("acoustic");
 
   return (
-    <div className="container mx-auto  space-y-8 mb-32">
+    <div className="container mx-auto space-y-8 mb-32">
       {/* Assessment Header */}
       <AssessmentHeader assessment={assessment} user={user} patient={patient} />
 
