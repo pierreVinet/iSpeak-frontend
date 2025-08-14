@@ -469,7 +469,8 @@ export function transformToUIReferenceHypothesis(
 ): TranscriptionReference {
   if (intelligibilityResult.intelligibility_type === "words") {
     const data = intelligibilityResult.metrics.alignments_fda2[0].map(
-      (word) => ({
+      (word, index) => ({
+        index,
         reference: word.reference_words,
         transcription: word.hypothesis_words,
         correct: isCorrectFromWER(word.wer),
@@ -483,7 +484,7 @@ export function transformToUIReferenceHypothesis(
     };
   } else if (intelligibilityResult.intelligibility_type === "sentences") {
     const data = intelligibilityResult.metrics.alignments_fda2.map(
-      (sentence) => {
+      (sentence, index) => {
         const alignmentsOrdered = sentence.alignments[0].sort(
           (a, b) => a.index - b.index
         );
@@ -504,6 +505,7 @@ export function transformToUIReferenceHypothesis(
         }
 
         return {
+          index,
           reference: sentence.reference,
           transcription: transcriptionWithTypeOfAlignment,
           // transcription: sentence.hypothesis,

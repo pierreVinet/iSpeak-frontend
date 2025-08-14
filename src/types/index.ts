@@ -43,6 +43,7 @@ export type WordWithAlignementType = {
 };
 
 export type TranscriptionReferenceData = {
+  index: number;
   reference: string;
   transcription: string | WordWithAlignementType[];
   correct: boolean;

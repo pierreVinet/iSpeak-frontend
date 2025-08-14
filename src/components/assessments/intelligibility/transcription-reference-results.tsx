@@ -75,11 +75,11 @@ const TranscriptionReferenceResults = ({
                   </div>
 
                   {/* Vertical separator */}
-                  <div className="w-px bg-gray-200 self-stretch mx-2"></div>
+                  <div className="w-px bg-gray-200 self-stretch mx-2 mr-3"></div>
 
                   {/* Content area with grouped transcription-reference blocks */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap gap-4">
+                    <div className="flex flex-wrap gap-8">
                       {rowItems.map((item, index) => {
                         const isTranscriptionNotEmpty =
                           item.transcription.length > 0;
@@ -113,7 +113,10 @@ const TranscriptionReferenceResults = ({
                               )}
                             </div>
                             {/* Reference text */}
-                            <div className="font-mono text-base text-gray-500 break-words hyphens-auto">
+                            <div className="relative font-mono text-base text-gray-500 break-words hyphens-auto">
+                              <span className="absolute -left-7 text-xs top-[5px] w-6 text-right">
+                                {item.index + 1}.
+                              </span>{" "}
                               {item.reference}
                             </div>
                           </div>
