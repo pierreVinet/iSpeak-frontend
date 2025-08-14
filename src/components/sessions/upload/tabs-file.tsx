@@ -49,7 +49,7 @@ const TabsFile = ({
 
   handleReset: () => void;
 }) => {
-  const [uploadTypeError, setUploadTypeError] = useState(false);
+  const [uploadTypeError, setUploadTypeError] = useState<string | null>(null);
   const { file, setFile, setActiveTab, setStep, form } = useFileUpload();
 
   const handleFile = (file: File) => {
@@ -58,10 +58,11 @@ const TabsFile = ({
       file_size: (file.size ? file.size / (1024 * 1024) : 0).toFixed(2) + " MB",
       file_type: file.type,
     });
+
     if (file.type.startsWith("video/") || file.type.startsWith("audio/")) {
       setFile(file);
       setIsProcessing(true);
-      setUploadTypeError(false);
+      setUploadTypeError(null);
 
       // Simulate processing delay
       // setTimeout(() => {
@@ -69,7 +70,13 @@ const TabsFile = ({
       setIsProcessed(true);
       // }, 1000);
     } else {
-      setUploadTypeError(true);
+      const fileType = file.type.split("/")[1];
+      const headerMessage = fileType
+        ? `Files of type .${fileType} are not supported. `
+        : "This file type is not supported. ";
+      const errorMessage =
+        headerMessage + " Please upload a video or audio file.";
+      setUploadTypeError(errorMessage);
     }
   };
 
@@ -181,9 +188,7 @@ const TabsFile = ({
               Select File
             </Button>
             {uploadTypeError && (
-              <p className="text-base text-red-500 mt-1">
-                Please upload a video or audio file.
-              </p>
+              <p className="text-sm text-red-500 mt-1">{uploadTypeError}</p>
             )}
           </div>
         </div>
