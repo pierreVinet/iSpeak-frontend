@@ -36,9 +36,15 @@ export type PhonemeData = {
   count: number;
 };
 
+export type WordWithAlignementType = {
+  index: number;
+  word: string;
+  type: string;
+};
+
 export type TranscriptionReferenceData = {
   reference: string;
-  transcription: string;
+  transcription: string | WordWithAlignementType[];
   correct: boolean;
 };
 

@@ -348,6 +348,7 @@ export const AnalysisResultDataSchema = z.object({
   intelligibility_scores: IntelligibilityScoresSchema,
   acoustic_results: z
     .record(z.string().uuid(), AcousticResultsSchema)
+    .nullable()
     .optional(),
   intelligibility_results: z
     .record(z.string().uuid(), IntelligibilityResultSchema)

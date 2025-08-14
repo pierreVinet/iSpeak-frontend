@@ -7,6 +7,7 @@ import {
   ProcessingStep,
   TimeRange,
   TranscriptionReference,
+  WordWithAlignementType,
 } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -482,11 +483,33 @@ export function transformToUIReferenceHypothesis(
     };
   } else if (intelligibilityResult.intelligibility_type === "sentences") {
     const data = intelligibilityResult.metrics.alignments_fda2.map(
-      (sentence) => ({
-        reference: sentence.reference,
-        transcription: sentence.hypothesis,
-        correct: isCorrectFromWER(sentence.wer),
-      })
+      (sentence) => {
+        const alignmentsOrdered = sentence.alignments[0].sort(
+          (a, b) => a.index - b.index
+        );
+        let hypWordIndex = 0;
+        const transcriptionWithTypeOfAlignment: WordWithAlignementType[] = [];
+
+        for (let i = 0; i < alignmentsOrdered.length; i++) {
+          const al = alignmentsOrdered[i];
+          const hypWords = al.hyp_words.map((word) => ({
+            index: hypWordIndex++,
+            word,
+            type: al.type,
+          }));
+
+          if (al.type !== "delete") {
+            transcriptionWithTypeOfAlignment.push(...hypWords);
+          }
+        }
+
+        return {
+          reference: sentence.reference,
+          transcription: transcriptionWithTypeOfAlignment,
+          // transcription: sentence.hypothesis,
+          correct: isCorrectFromWER(sentence.wer),
+        };
+      }
     );
 
     return {

@@ -7,7 +7,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { TranscriptionReferenceData } from "@/types";
+import { cn } from "@/lib/utils";
+import { TranscriptionReferenceData, WordWithAlignementType } from "@/types";
 import React from "react";
 
 // Define the common data structure for both word and sentence level
@@ -101,9 +102,15 @@ const TranscriptionReferenceResults = ({
                                   : "text-gray-500 italic"
                               }  break-words hyphens-auto`}
                             >
-                              {isTranscriptionNotEmpty
-                                ? item.transcription
-                                : "[empty]"}
+                              {isTranscriptionNotEmpty ? (
+                                <DisplayTranscriptionFromWordWithAlignementType
+                                  title={title}
+                                  sentenceId={index}
+                                  transcription={item.transcription}
+                                />
+                              ) : (
+                                "[empty]"
+                              )}
                             </div>
                             {/* Reference text */}
                             <div className="font-mono text-base text-gray-500 break-words hyphens-auto">
@@ -129,3 +136,32 @@ const TranscriptionReferenceResults = ({
 };
 
 export default TranscriptionReferenceResults;
+
+const DisplayTranscriptionFromWordWithAlignementType = ({
+  transcription,
+  title,
+  sentenceId,
+}: {
+  transcription: WordWithAlignementType[] | string;
+  title: string;
+  sentenceId: number;
+}) => {
+  if (typeof transcription === "string") {
+    return <>{transcription}</>;
+  }
+
+  return (
+    <div>
+      {transcription.map((item) => (
+        <span
+          key={`${title}-${sentenceId}-${item.index}`}
+          className={cn(
+            item.type === "delete" && "text-red-500",
+            item.type === "equal" && "text-green-500",
+            item.type === "substitute" && "text-red-500"
+          )}
+        >{`${item.word} `}</span>
+      ))}
+    </div>
+  );
+};

@@ -72,8 +72,8 @@ const TabsFile = ({
     } else {
       const fileType = file.type.split("/")[1];
       const headerMessage = fileType
-        ? `Files of type .${fileType} are not supported. `
-        : "This file type is not supported. ";
+        ? `Files of type .${fileType} are not supported.`
+        : "This file type is not supported.";
       const errorMessage =
         headerMessage + " Please upload a video or audio file.";
       setUploadTypeError(errorMessage);
