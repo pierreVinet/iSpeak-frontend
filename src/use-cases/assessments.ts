@@ -7,8 +7,7 @@
 import { getAuthSession } from "@/server/auth";
 import { AnalysisResultData } from "@/types";
 import { getAssessmentsByUserId } from "@/data-access/assessments";
-import { AnalysisResultDataSchema, AnalysisResultsDataSchema } from "@/lib/zod";
-import { z } from "zod";
+import { AnalysisResultsDataSchema } from "@/lib/zod";
 
 /**
  * Get all assessments for the authenticated user

@@ -98,8 +98,8 @@ const TranscriptionReferenceResults = ({
                               className={`font-mono text-base min-h-6 ${
                                 isTranscriptionNotEmpty
                                   ? item.correct
-                                    ? "text-green-600 font-medium"
-                                    : "text-red-600 font-medium"
+                                    ? "text-green-600"
+                                    : "text-red-600"
                                   : "text-gray-500 italic"
                               }  break-words hyphens-auto`}
                             >
@@ -108,7 +108,7 @@ const TranscriptionReferenceResults = ({
                                 : "[empty]"}
                             </div>
                             {/* Reference text */}
-                            <div className="font-mono text-sm text-gray-500 break-words hyphens-auto">
+                            <div className="font-mono text-base text-gray-500 break-words hyphens-auto">
                               {item.reference}
                             </div>
                           </div>

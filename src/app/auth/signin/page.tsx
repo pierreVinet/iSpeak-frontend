@@ -29,7 +29,7 @@ export default function SignIn() {
         name: user.name,
       });
       router.push("/dashboard");
-      router.refresh();
+      // router.refresh();
     }
   }, [session]);
 
