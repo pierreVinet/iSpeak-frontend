@@ -47,8 +47,8 @@ export function IntelligibilitySection({
 
         <Card className="">
           <PhonemeHeader
-            title="Misspelled Phonemes"
-            description="Phonemes ranked by frequency of misspellings"
+            title="Phonemes Errors"
+            description="Phonemes of words that didn't match the reference. Ranked by frequency."
             showMore
             assessmentId={assessment.metadata.job_id}
             totalPhonemes={totalPhonemes}

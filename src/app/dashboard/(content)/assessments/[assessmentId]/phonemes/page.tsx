@@ -112,8 +112,8 @@ const PhonemesPage = async ({
         <div className="w-full flex flex-col gap-6">
           <Card className="">
             <PhonemeHeader
-              title="Misspelled Phonemes"
-              description="Phonemes ranked by frequency of misspellings"
+              title="Phonemes Errors"
+              description="Phonemes of words that didn't match the reference. Ranked by frequency."
               assessmentId={assessmentId}
               totalPhonemes={totalPhonemes}
             />
@@ -124,8 +124,8 @@ const PhonemesPage = async ({
               type="misspelled"
             />
             <PhonemeHeader
-              title="Correctly Spelled Phonemes"
-              description="Phonemes ranked by frequency of correct pronunciation"
+              title="Phonemes Correct"
+              description="Phonemes of words that matched the reference. Ranked by frequency."
               assessmentId={assessmentId}
               totalPhonemes={totalCorrect}
             />

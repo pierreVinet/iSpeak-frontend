@@ -9,7 +9,7 @@ interface PhonemeLegendProps {
 const PhonemeLegend = ({ sortedData, getBarColor }: PhonemeLegendProps) => {
   return (
     <div className="space-y-2">
-      <h4 className="text-sm font-medium">Top Misspelled Phonemes:</h4>
+      <h4 className="text-sm font-medium">Top Phonemes Errors:</h4>
       <div className="grid grid-cols-2 gap-2">
         {sortedData.slice(0, 6).map((item, index) => (
           <div key={item.phoneme} className="flex items-center space-x-2">
