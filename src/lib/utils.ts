@@ -427,12 +427,7 @@ export function groupAssessmentsByMonth(assessments: AnalysisResultData[]) {
   return sortedKeys.map((key) => ({
     key,
     monthYear: key === "no-date" ? "No Date" : formatMonthYear(key),
-    assessments: groups[key].sort((a, b) => {
-      // Sort assessments within each group by date/time (newest first)
-      const dateA = a.metadata.date ? new Date(a.metadata.date) : new Date(0);
-      const dateB = b.metadata.date ? new Date(b.metadata.date) : new Date(0);
-      return dateB.getTime() - dateA.getTime();
-    }),
+    assessments: groups[key],
   }));
 }
 
@@ -448,18 +443,13 @@ function formatMonthYear(monthYear: string): string {
   });
 }
 
-export const formatDate = (
-  dateString: string | null,
-  includeTime: boolean = false
-) => {
+export const formatDate = (dateString: string | null) => {
   if (!dateString) return "No date";
 
-  return new Date(dateString).toLocaleDateString("en-UK", {
+  return new Date(dateString).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
-    hour: includeTime ? "numeric" : undefined,
-    minute: includeTime ? "numeric" : undefined,
   });
 };
 

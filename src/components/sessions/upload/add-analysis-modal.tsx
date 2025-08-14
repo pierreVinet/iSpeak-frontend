@@ -221,8 +221,17 @@ export function AddAnalysisModal({
                       className="flex flex-col space-y-1"
                     >
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="acoustic" id="acoustic" />
-                        <Label htmlFor="acoustic">Acoustic Analysis</Label>
+                        <RadioGroupItem
+                          value="acoustic"
+                          id="acoustic"
+                          disabled
+                        />
+                        <Label
+                          className="text-muted-foreground"
+                          htmlFor="acoustic"
+                        >
+                          Acoustic Analysis
+                        </Label>
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <HelpCircle className="h-4 w-4 text-muted-foreground" />
@@ -231,7 +240,7 @@ export function AddAnalysisModal({
                             {analysisTypeDescriptions.acoustic}
                           </TooltipContent>
                         </Tooltip>
-                        {/* <ComingSoonBadge /> */}
+                        <ComingSoonBadge />
                       </div>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem

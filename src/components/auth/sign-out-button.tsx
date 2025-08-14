@@ -19,19 +19,17 @@ export default function SignOutButton() {
       });
     } catch (error) {
       console.error("Error signing out:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Button
-      variant="outline"
-      onClick={handleSignOut}
-      disabled={loading}
-      className="text-red-800 hover:text-red-800"
-    >
+    <Button variant="destructive" onClick={handleSignOut} disabled={loading}>
       {loading ? (
         <>
           <Loader2 className="animate-spin h-4 w-4" />
+          Signing out...
         </>
       ) : (
         "Sign out"

@@ -213,6 +213,7 @@ export const SentencesMetricsSchema = z.object({
   phonemic_analysis: PhonemicAnalysisSchema,
 });
 
+// Discriminated union for intelligibility results
 const BaseIntelligibilityResultSchema = z.object({
   segment_id: z.string().uuid(),
   segment_name: z.string(),
@@ -259,96 +260,10 @@ export const MetadataSchema = z.object({
   analysis_types: z.array(AnalysisTypeSchema),
 });
 
-// Acoustic analysis schemas
-
-// Time series schemas
-export const FundamentalFrequencyTimeSeriesSchema = z.object({
-  time: z.array(z.number()),
-  frequency: z.array(z.number()),
-});
-
-export const IntensityTimeSeriesSchema = z.object({
-  time: z.array(z.number()),
-  intensity: z.array(z.number()),
-});
-
-export const FormantsTimeSeriesSchema = z.object({
-  time: z.array(z.number()),
-  F1: z.array(z.number()),
-  F2: z.array(z.number()),
-  F3: z.array(z.number()),
-  F4: z.array(z.number()),
-  F5: z.array(z.number()),
-});
-
-// Formant statistics schema (reusable for F1-F5)
-export const FormantStatisticsSchema = z.object({
-  mean: z.number(),
-  std: z.number(),
-  range: z.number(),
-  min: z.number(),
-  max: z.number(),
-  total_frames: z.number(),
-  valid_frames: z.number(),
-});
-
-// Fundamental frequency schema
-export const FundamentalFrequencySchema = z.object({
-  time_series: FundamentalFrequencyTimeSeriesSchema,
-  mean_f0: z.number(),
-  std_f0: z.number(),
-  range_f0: z.number(),
-  min_f0: z.number(),
-  max_f0: z.number(),
-  voiced_fraction: z.number(),
-  total_frames: z.number(),
-  voiced_frames: z.number(),
-});
-
-// Intensity schema
-export const IntensitySchema = z.object({
-  time_series: IntensityTimeSeriesSchema,
-  mean_intensity: z.number(),
-  std_intensity: z.number(),
-  range_intensity: z.number(),
-  min_intensity: z.number(),
-  max_intensity: z.number(),
-  variability: z.number(),
-  total_frames: z.number(),
-  valid_frames: z.number(),
-});
-
-// Formants schema
-export const FormantsSchema = z.object({
-  time_series: FormantsTimeSeriesSchema,
-  F1: FormantStatisticsSchema,
-  F2: FormantStatisticsSchema,
-  F3: FormantStatisticsSchema,
-  F4: FormantStatisticsSchema,
-  F5: FormantStatisticsSchema,
-});
-
-export const AcousticFeaturesSchema = z.object({
-  fundamental_frequency: FundamentalFrequencySchema.optional(),
-  intensity: IntensitySchema.optional(),
-  formants: FormantsSchema.optional(),
-});
-
-// Main acoustic results schema
-const AcousticResultsSchema = z.object({
-  segment_id: z.string().uuid(),
-  segment_name: z.string(),
-  segment_type: z.literal("acoustic"),
-  time_range: TimeRangeSchema,
-  acoustic_features: AcousticFeaturesSchema,
-});
-
 export const AnalysisResultDataSchema = z.object({
   metadata: MetadataSchema,
   intelligibility_scores: IntelligibilityScoresSchema,
-  acoustic_results: z
-    .record(z.string().uuid(), AcousticResultsSchema)
-    .optional(),
+  // todo: intelligibility_results can be empty {}
   intelligibility_results: z
     .record(z.string().uuid(), IntelligibilityResultSchema)
     .nullable(),

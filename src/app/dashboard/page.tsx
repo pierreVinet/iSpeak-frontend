@@ -28,7 +28,7 @@ export default async function DashboardPage() {
             assessments={assessments}
             patients={patients}
           />
-          {/* <HelloWorldSession session={session} /> */}
+          <HelloWorldSession session={session} />
         </section>
       </div>
     </div>

@@ -169,6 +169,7 @@ const TabsFile = ({
               </AlertDescription>
             </Alert>
             <Button
+              variant="outline"
               onClick={() => fileInputRef.current?.click()}
               disabled={isProcessing}
               className="gap-2"

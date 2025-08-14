@@ -31,6 +31,8 @@ const TranscriptionReferenceResults = ({
   const nbItemsCorrect = data.filter((item) => item.correct === true).length;
   const nbItems = data.length;
 
+  console.log(nbItemsCorrect, nbItems);
+
   return (
     <Card className="border-gray-200 bg-white shadow-sm col-span-1 lg:col-span-2">
       <CardHeader>
