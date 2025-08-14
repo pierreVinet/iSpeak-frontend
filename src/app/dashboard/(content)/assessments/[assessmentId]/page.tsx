@@ -6,6 +6,7 @@ import { getAnalysisResultsByJobIdUseCase } from "@/use-cases/audio-analysis";
 import Link from "next/link";
 import { getPatientsUseCase } from "@/use-cases/patients";
 import NotFoundAssessment from "@/components/assessments/not-found-assessment";
+import AcousticSection from "@/components/assessments/acoustic/acoustic-section";
 
 interface AssessmentPageProps {
   params: Promise<{
@@ -56,12 +57,14 @@ export default async function AssessmentPage({ params }: AssessmentPageProps) {
   const isAcoustic = assessment.metadata.analysis_types.includes("acoustic");
 
   return (
-    <div className="container mx-auto  space-y-8 mb-32">
+    <div className="container mx-auto space-y-8 mb-32">
       {/* Assessment Header */}
       <AssessmentHeader assessment={assessment} user={user} patient={patient} />
 
       {/* Intelligibility Section */}
       {isIntelligibility && <IntelligibilitySection assessment={assessment} />}
+      {/* Acoustic Section */}
+      {isAcoustic && <AcousticSection assessment={assessment} />}
     </div>
   );
 }

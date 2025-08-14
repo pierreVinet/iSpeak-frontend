@@ -89,7 +89,7 @@ export function AssessmentCard({
               <div className="text-xs text-muted-foreground">
                 <Badge variant="outline" className="text-xs">
                   <Calendar className="h-3 w-3 mr-1" />
-                  {formatDate(assessment.metadata.date)}
+                  {formatDate(assessment.metadata.date, true)}
                 </Badge>
               </div>
             </div>

@@ -4,6 +4,7 @@ import { sidebarNavigationItems } from "@/app/dashboard/costants";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
@@ -16,8 +17,11 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import LLUIiSpeakLogo from "./llui-ispeak-logo";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
+import SidebarSession from "../auth/sidebar-session";
 
 export function AppSidebar() {
+  const { data: session } = useSession();
   const pathname = usePathname();
 
   // Function to determine if a navigation item is active
@@ -72,6 +76,13 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter className="pb-10 bg-background">
+        <SidebarMenu>
+          <SidebarMenuItem className="w-full flex flex-row justify-between px-2">
+            <SidebarSession session={session} />
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );
