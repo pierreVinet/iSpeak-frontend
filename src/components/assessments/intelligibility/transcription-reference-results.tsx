@@ -75,7 +75,7 @@ const TranscriptionReferenceResults = ({
                   </div>
 
                   {/* Vertical separator */}
-                  <div className="w-px bg-gray-200 self-stretch mx-2 mr-3"></div>
+                  <div className="w-px bg-gray-200 self-stretch mx-2 mr-3" />
 
                   {/* Content area with grouped transcription-reference blocks */}
                   <div className="flex-1 min-w-0">
@@ -94,7 +94,7 @@ const TranscriptionReferenceResults = ({
                           >
                             {/* Patient transcription */}
                             <div
-                              className={`font-mono text-base min-h-6 ${
+                              className={`font-mono relative text-base min-h-6 ${
                                 isTranscriptionNotEmpty
                                   ? item.correct
                                     ? "text-green-600"
@@ -102,6 +102,9 @@ const TranscriptionReferenceResults = ({
                                   : "text-gray-500 italic"
                               }  break-words hyphens-auto`}
                             >
+                              <span className="absolute -left-7 text-xs top-[5px] w-6 text-right text-gray-500">
+                                {item.index + 1}.
+                              </span>{" "}
                               {isTranscriptionNotEmpty ? (
                                 <DisplayTranscriptionFromWordWithAlignementType
                                   title={title}
@@ -113,10 +116,7 @@ const TranscriptionReferenceResults = ({
                               )}
                             </div>
                             {/* Reference text */}
-                            <div className="relative font-mono text-base text-gray-500 break-words hyphens-auto">
-                              <span className="absolute -left-7 text-xs top-[5px] w-6 text-right">
-                                {item.index + 1}.
-                              </span>{" "}
+                            <div className=" font-mono text-base text-gray-500 break-words hyphens-auto">
                               {item.reference}
                             </div>
                           </div>
