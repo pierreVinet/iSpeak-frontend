@@ -38,7 +38,7 @@ const PhonemeBlock: React.FC<PhonemeBlockProps> = ({
     return (
       <span>
         {before}
-        <span className="underline">{highlighted}</span>
+        <span className="underline underline-offset-2">{highlighted}</span>
         {after}
       </span>
     );
@@ -47,7 +47,7 @@ const PhonemeBlock: React.FC<PhonemeBlockProps> = ({
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center p-1 border border-gray-300 bg-white text-center min-w-[80px] h-[80px]",
+        "flex flex-col items-center justify-center p-1 border border-gray-300 bg-white text-center min-w-[60px] h-[60px]",
         variant === "vowel" && "bg-gray-100",
         variant === "consonant" && "bg-yellow-100",
         className

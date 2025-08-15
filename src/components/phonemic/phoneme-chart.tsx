@@ -29,7 +29,7 @@ interface CategoryLabelProps {
 
 const PhonemeChart: React.FC<PhonemeChartProps> = ({ className }) => {
   return (
-    <Card>
+    <div className="space-y-6">
       <CardHeader>
         <CardTitle className="text-lg font-semibold">Phonemic Chart</CardTitle>
       </CardHeader>
@@ -77,7 +77,7 @@ const PhonemeChart: React.FC<PhonemeChartProps> = ({ className }) => {
           </div>
         </div>
       </CardContent>
-    </Card>
+    </div>
   );
 };
 
