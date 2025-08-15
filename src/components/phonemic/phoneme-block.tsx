@@ -47,7 +47,7 @@ const PhonemeBlock: React.FC<PhonemeBlockProps> = ({
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center p-3 border border-gray-300 bg-white text-center min-w-[100px] h-[100px]",
+        "flex flex-col items-center justify-center p-1 border border-gray-300 bg-white text-center min-w-[80px] h-[80px]",
         variant === "vowel" && "bg-gray-100",
         variant === "consonant" && "bg-yellow-100",
         className

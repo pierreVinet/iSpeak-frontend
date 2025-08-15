@@ -5,6 +5,11 @@ import PhonemeChart from "@/components/phonemic/phoneme-chart";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import {
   extractMisspelledPhonemicData,
   extractCorrectPhonemicData,
   formatUUID,
@@ -111,37 +116,41 @@ const PhonemesPage = async ({
         </div>
 
         <div className="w-full flex flex-col gap-6">
-          {/* Phonemic Chart */}
-          <Card className="p-6">
-            <PhonemeChart />
-          </Card>
-
-          <Card className="">
-            <PhonemeHeader
-              title="Phonemes Errors"
-              description="Phonemes of words that didn't match the reference. Ranked by frequency."
-              assessmentId={assessmentId}
-              totalPhonemes={totalPhonemes}
-            />
-            <PhonemeContent
-              maxMisspellings={maxMisspellings}
-              sortedData={sortedData}
-              colorCategories={colorCategories}
-              type="misspelled"
-            />
-            <PhonemeHeader
-              title="Phonemes Correct"
-              description="Phonemes of words that matched the reference. Ranked by frequency."
-              assessmentId={assessmentId}
-              totalPhonemes={totalCorrect}
-            />
-            <PhonemeContent
-              maxMisspellings={maxCorrect}
-              sortedData={correctData}
-              colorCategories={[]}
-              type="correct"
-            />
-          </Card>
+          <ResizablePanelGroup direction="horizontal" className="gap-3">
+            <ResizablePanel defaultSize={50}>
+              <Card className="">
+                <PhonemeHeader
+                  title="Phonemes Errors"
+                  description="Phonemes of words that didn't match the reference. Ranked by frequency."
+                  assessmentId={assessmentId}
+                  totalPhonemes={totalPhonemes}
+                />
+                <PhonemeContent
+                  maxMisspellings={maxMisspellings}
+                  sortedData={sortedData}
+                  colorCategories={colorCategories}
+                  type="misspelled"
+                />
+                <PhonemeHeader
+                  title="Phonemes Correct"
+                  description="Phonemes of words that matched the reference. Ranked by frequency."
+                  assessmentId={assessmentId}
+                  totalPhonemes={totalCorrect}
+                />
+                <PhonemeContent
+                  maxMisspellings={maxCorrect}
+                  sortedData={correctData}
+                  colorCategories={[]}
+                  type="correct"
+                />
+              </Card>
+            </ResizablePanel>
+            <ResizableHandle />
+            <ResizablePanel defaultSize={50}>
+              {/* Phonemic Chart */}
+              <PhonemeChart />
+            </ResizablePanel>
+          </ResizablePanelGroup>
         </div>
       </div>
     </div>
