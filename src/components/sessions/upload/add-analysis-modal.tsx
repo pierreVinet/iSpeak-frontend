@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -53,6 +53,8 @@ import {
 } from "@/app/dashboard/costants";
 import { formAnalysisModalSchema } from "@/lib/zod";
 import ComingSoonBadge from "@/components/general/coming-soon-badge";
+import AudioControls from "./audio-controls";
+import { useFileUpload } from "@/contexts/file-upload";
 import posthog from "posthog-js";
 
 type FormData = z.infer<typeof formAnalysisModalSchema>;
@@ -70,6 +72,7 @@ export function AddAnalysisModal({
 }: AddAnalysisModalProps) {
   const [hasUserEditedName, setHasUserEditedName] = useState(false);
   const isEditMode = !!editingSegment;
+  const { wavesurferInstance } = useFileUpload();
 
   const timeRange = isEditMode ? editingSegment?.timeRange : selectedRange;
 
@@ -164,6 +167,20 @@ export function AddAnalysisModal({
   // Get time validation error
   const timeError = validateTimeRange(timeRange, duration);
 
+  const handleSeek = useCallback(
+    (time: number) => {
+      if (!wavesurferInstance || !duration) return;
+
+      try {
+        const normalizedSeek = time / duration;
+        wavesurferInstance.seekTo(normalizedSeek);
+      } catch (error) {
+        console.error("Error during seek:", error);
+      }
+    },
+    [duration, wavesurferInstance]
+  );
+
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       form.reset();
@@ -237,16 +254,26 @@ export function AddAnalysisModal({
           <DialogTitle>
             {isEditMode ? "Edit Analysis" : "Add New Analysis"}
           </DialogTitle>
-          <DialogDescription>
-            {timeRange &&
-              formatTime(timeRange.start) +
-                " - " +
-                formatTime(timeRange.end) +
-                " (Duration: " +
-                formatTime(timeRange.end - timeRange.start, true) +
-                ")"}
-          </DialogDescription>
         </DialogHeader>
+
+        {/* Audio Controls for Segment Playback */}
+        {timeRange && wavesurferInstance && (
+          <div className="bg-muted/50 rounded-lg p-4">
+            <div className="text-sm font-medium text-gray-700 mb-2">
+              Preview Segment (Duration:{" "}
+              {formatTime(timeRange.end - timeRange.start, true)})
+            </div>
+            <AudioControls
+              duration={duration}
+              isLoading={false}
+              error={null}
+              playbackRange={timeRange}
+              showSeekbar={true}
+              enableSegmentPlayback={true}
+              onSeek={handleSeek}
+            />
+          </div>
+        )}
 
         <Form {...form}>
           <form

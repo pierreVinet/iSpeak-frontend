@@ -623,3 +623,7 @@ export const extractCorrectPhonemicData = (
     totalPhonemes: sortedData.length,
   };
 };
+
+export const isTimeInRange = (time: number, range: TimeRange) => {
+  return time >= range.start && time < range.end;
+};

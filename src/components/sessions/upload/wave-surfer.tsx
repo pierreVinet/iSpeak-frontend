@@ -1,18 +1,11 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Loader2, Play } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useWavesurfer } from "@wavesurfer/react";
-import { Pause } from "lucide-react";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { AnalysisSegmentData, WaveSurferWithRegionsProps } from "@/types";
-import { formatTime } from "@/lib/utils";
 import RegionsPlugin from "wavesurfer.js/dist/plugins/regions.esm.js";
+import AudioControls from "./audio-controls";
+import { useFileUpload } from "@/contexts/file-upload";
 import posthog from "posthog-js";
 
 const WaveSurfer = ({
@@ -28,7 +21,13 @@ const WaveSurfer = ({
   duration,
 }: WaveSurferWithRegionsProps) => {
   const wavesurferRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const {
+    setWavesurferInstance,
+    isPlaying,
+    setIsPlaying,
+    currentTime,
+    setCurrentTime,
+  } = useFileUpload();
 
   const regionsPlugin = useMemo(() => RegionsPlugin.create(), []);
   const plugins = useMemo(() => [regionsPlugin], [regionsPlugin]);
@@ -41,7 +40,11 @@ const WaveSurfer = ({
     .replace("oklch(", "oklch(")
     .replace(")", " / 0.6)");
 
-  const { wavesurfer, isReady, currentTime } = useWavesurfer({
+  const {
+    wavesurfer,
+    isReady,
+    currentTime: wavesurferCurrentTime,
+  } = useWavesurfer({
     container: wavesurferRef,
     height: 150,
     waveColor: primaryWithOpacity,
@@ -63,6 +66,9 @@ const WaveSurfer = ({
       setDuration(totalDuration);
       setIsLoading(false);
       setError("");
+
+      // Share the wavesurfer instance
+      setWavesurferInstance(wavesurfer);
 
       wavesurfer.on("finish", () => {
         setIsPlaying(false);
@@ -123,7 +129,12 @@ const WaveSurfer = ({
         });
       }
     }
-  }, [isReady, regionsPlugin, onRegionUpdate]);
+  }, [isReady, regionsPlugin, onRegionUpdate, setWavesurferInstance]);
+
+  // Sync current time from wavesurfer to context
+  useEffect(() => {
+    setCurrentTime(wavesurferCurrentTime);
+  }, [wavesurferCurrentTime, setCurrentTime]);
 
   useEffect(() => {
     handleFixedRegion(analysisSegments);
@@ -222,7 +233,7 @@ const WaveSurfer = ({
     });
   };
 
-  const handlePlayPause = () => {
+  const handlePlayPause = useCallback(() => {
     if (!wavesurfer) return;
 
     posthog.capture("play_pause_button_clicked", {
@@ -239,15 +250,14 @@ const WaveSurfer = ({
     } catch (error) {
       console.error("Error during play/pause:", error);
     }
-  };
+  }, [wavesurfer, isPlaying, setIsPlaying]);
 
   const handleSeek = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (time: number) => {
       if (!wavesurfer || !duration) return;
 
       try {
-        const seekTo = parseFloat(e.target.value);
-        const normalizedSeek = seekTo / duration;
+        const normalizedSeek = time / duration;
         wavesurfer.seekTo(normalizedSeek);
       } catch (error) {
         console.error("Error during seek:", error);
@@ -255,19 +265,6 @@ const WaveSurfer = ({
     },
     [duration, wavesurfer]
   );
-
-  // const playSelectedRegion = () => {
-  //   if (!wavesurfer || !selectedRange) return;
-
-  //   try {
-  //     const regions = regionsPlugin?.getRegions() || [];
-  //     if (regions.length > 0) {
-  //       regions[0].play();
-  //     }
-  //   } catch (error) {
-  //     console.error("Error playing region:", error);
-  //   }
-  // };
 
   return (
     <>
@@ -281,41 +278,15 @@ const WaveSurfer = ({
       </div>
 
       {/* Audio Controls */}
-      <div className="flex items-center gap-2">
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handlePlayPause}
-            disabled={isLoading || !!error}
-            className="gap-2"
-          >
-            {isPlaying ? (
-              <Pause className="h-4 w-4" />
-            ) : (
-              <Play className="h-4 w-4" />
-            )}
-          </Button>
-        </div>
-
-        <div className="flex-1 flex items-center gap-2">
-          <span className="text-sm text-gray-600 min-w-0">
-            {formatTime(currentTime)}
-          </span>
-          <input
-            type="range"
-            min="0"
-            step="0.01"
-            max={duration || 0}
-            value={currentTime}
-            onChange={handleSeek}
-            className="flex-1"
-          />
-          <span className="text-sm text-gray-600 min-w-0">
-            {formatTime(duration)}
-          </span>
-        </div>
-      </div>
+      <AudioControls
+        isPlaying={isPlaying}
+        currentTime={currentTime}
+        duration={duration}
+        isLoading={isLoading}
+        error={error}
+        onPlayPause={handlePlayPause}
+        onSeek={handleSeek}
+      />
     </>
   );
 };

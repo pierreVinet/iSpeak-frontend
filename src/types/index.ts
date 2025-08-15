@@ -88,6 +88,13 @@ export type FileUploadContext = {
   setEditingSegment: React.Dispatch<
     React.SetStateAction<AnalysisSegment | null>
   >;
+  // Wavesurfer instance sharing
+  wavesurferInstance: any | null;
+  setWavesurferInstance: React.Dispatch<React.SetStateAction<any | null>>;
+  isPlaying: boolean;
+  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+  currentTime: number;
+  setCurrentTime: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export type ErrorCallback = (error: AudioAnalysisUseCaseError) => void;

@@ -52,6 +52,14 @@ const FileUploadProvider = ({ children }: { children: React.ReactNode }) => {
   const [editingSegment, setEditingSegment] = useState<AnalysisSegment | null>(
     null
   );
+
+  // Wavesurfer instance sharing
+  const [wavesurferInstance, setWavesurferInstance] = useState<any | null>(
+    null
+  );
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [currentTime, setCurrentTime] = useState<number>(0);
+
   const form = useForm<FormSessionSmallData>({
     resolver: zodResolver(fileInfoFormSchema),
     defaultValues: {
@@ -316,6 +324,11 @@ const FileUploadProvider = ({ children }: { children: React.ReactNode }) => {
       progress: 0,
     });
     setDuration(0);
+
+    // Reset audio state
+    setWavesurferInstance(null);
+    setIsPlaying(false);
+    setCurrentTime(0);
   }, []);
 
   const clearError = useCallback(() => {
@@ -357,6 +370,12 @@ const FileUploadProvider = ({ children }: { children: React.ReactNode }) => {
         setAnalysisSegments,
         editingSegment,
         setEditingSegment,
+        wavesurferInstance,
+        setWavesurferInstance,
+        isPlaying,
+        setIsPlaying,
+        currentTime,
+        setCurrentTime,
       }}
     >
       {children}
