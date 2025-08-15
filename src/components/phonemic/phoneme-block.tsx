@@ -54,7 +54,7 @@ const PhonemeBlock: React.FC<PhonemeBlockProps> = ({
       )}
     >
       {/* Phonemic symbol (top) */}
-      <div className="text-2xl font-bold mb-1 leading-none">{phonemic}</div>
+      <div className="text-xl font-bold mb-1 leading-none">{phonemic}</div>
 
       {/* Example word (bottom) */}
       <div className="text-sm leading-tight">{renderExample()}</div>

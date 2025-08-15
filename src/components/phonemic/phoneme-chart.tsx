@@ -4,7 +4,13 @@ import SectionHeader from "./section-header";
 import phonemicData from "@/data/phonemic-chart.json";
 import { cn } from "@/lib/utils";
 import { Separator } from "../ui/separator";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 
 interface PhonemeChartProps {
   className?: string;
@@ -32,6 +38,16 @@ const PhonemeChart: React.FC<PhonemeChartProps> = ({ className }) => {
     <div className="space-y-6">
       <CardHeader>
         <CardTitle className="text-lg font-semibold">Phonemic Chart</CardTitle>
+        <CardDescription>
+          <span className="bg-gray-100 inline text-gray-100 border rounded mr-1">
+            ---
+          </span>{" "}
+          Vowels <br />{" "}
+          <span className="bg-yellow-100 inline text-yellow-200 border rounded mr-1">
+            ---
+          </span>{" "}
+          Consonants
+        </CardDescription>
       </CardHeader>
       <CardContent className={cn("w-full h-full flex flex-col", className)}>
         {/* Vowels Section */}
@@ -119,7 +135,7 @@ const PhonemeSection: React.FC<PhonemeSectionProps> = ({
 
 const ThongHeader = ({ thong }: { thong: string }) => {
   return (
-    <div className="flex-1 text-center font-bold text-base py-2 bg-gray-100 rounded">
+    <div className="flex-1 text-center font-medium text-sm py-2 bg-gray-100 rounded">
       {thong}
     </div>
   );
