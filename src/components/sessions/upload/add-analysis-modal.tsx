@@ -28,7 +28,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Check, CornerDownLeft, HelpCircle } from "lucide-react";
+import { Check, CornerDownLeft, HelpCircle, Info } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -40,6 +40,7 @@ import type {
   AddAnalysisModalProps,
 } from "@/types";
 import {
+  cn,
   formatTime,
   parseIntelligibilitySentences,
   parseIntelligibilityWords,
@@ -189,7 +190,7 @@ export function AddAnalysisModal({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 py-4"
+            className="space-y-6 py-4"
           >
             <FormField
               control={form.control}
@@ -315,7 +316,8 @@ export function AddAnalysisModal({
                           />
                         </FormControl>
                         <FormDescription>
-                          Enter words separated by commas
+                          Enter words separated by commas{" "}
+                          <PonctuationBadge ponctuation="," />
                         </FormDescription>
                         {watchedReferenceWords && (
                           <p className="text-sm text-green-600">
@@ -342,7 +344,7 @@ export function AddAnalysisModal({
                             {...field}
                           />
                         </FormControl>
-                        <FormDescription className="">
+                        <FormDescription className="leading-6">
                           Enter sentences separated by periods{" "}
                           <PonctuationBadge ponctuation="." />, exclamation
                           marks <PonctuationBadge ponctuation="!" />, question
@@ -406,10 +408,15 @@ const AnalysisTypeTab = ({
   return (
     <TabsTrigger
       value={value}
-      className="flex items-center gap-2 cursor-pointer py-2"
+      className={cn(
+        "flex items-center gap-2 cursor-pointer py-2",
+        isActive && "cursor-default"
+      )}
     >
       {isActive && <Check className="text-primary" />}
-      <div className="text-wrap">{title}</div>
+      <div className={cn("text-wrap font-normal", isActive && "font-medium")}>
+        {title}
+      </div>
     </TabsTrigger>
   );
 };
