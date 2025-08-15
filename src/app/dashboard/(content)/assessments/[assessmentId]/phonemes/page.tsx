@@ -143,7 +143,7 @@ const PhonemesPage = async ({
                 type="correct"
               />
             </ResizablePanel>
-            <ResizableHandle />
+            <ResizableHandle withHandle />
             <ResizablePanel defaultSize={37}>
               {/* Phonemic Chart */}
               <PhonemeChart />
