@@ -49,3 +49,10 @@ export const analysisTypeDescriptions = {
   intelligibility:
     "Assess speech intelligibilitiy, comparing spoken words or/and sentences against a reference text.",
 };
+
+export const referenceTypeDescriptions = {
+  words:
+    "Input individual words that serve as the reference or objective for comparison against the spoken audio.",
+  sentences:
+    "Input complete sentences that serve as the reference or objective for comparison against the spoken audio.",
+};

@@ -45,7 +45,10 @@ import {
   parseIntelligibilityWords,
   validateTimeRange,
 } from "@/lib/utils";
-import { analysisTypeDescriptions } from "@/app/dashboard/costants";
+import {
+  analysisTypeDescriptions,
+  referenceTypeDescriptions,
+} from "@/app/dashboard/costants";
 import { formAnalysisModalSchema } from "@/lib/zod";
 import ComingSoonBadge from "@/components/general/coming-soon-badge";
 import posthog from "posthog-js";
@@ -260,7 +263,20 @@ export function AddAnalysisModal({
                   name="referenceType"
                   render={({ field }) => (
                     <FormItem className="">
-                      <FormLabel>Reference Type</FormLabel>
+                      <FormLabel>
+                        Reference Type{" "}
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <HelpCircle className="h-4 w-4 text-muted-foreground cursor-default" />
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-xs">
+                            <span className="font-bold">Words: </span>{" "}
+                            {referenceTypeDescriptions.words} <br /> <br />
+                            <span className="font-bold">Sentences: </span>
+                            {referenceTypeDescriptions.sentences}
+                          </TooltipContent>
+                        </Tooltip>
+                      </FormLabel>
                       <FormControl>
                         <Tabs
                           value={field.value}
