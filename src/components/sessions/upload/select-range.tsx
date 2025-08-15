@@ -2,29 +2,17 @@
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Scissors, X } from "lucide-react";
-import { useState } from "react";
 import type { SelectRangeProps } from "@/types";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import TimeInput from "@/components/ui/time-input";
-import { AddAnalysisModal } from "./add-analysis-modal";
-import posthog from "posthog-js";
-
 const SelectRange = ({
   selectedRange,
   onRangeChange,
-  onAddAnalysis,
   handleCancelRangeSelection,
   duration,
-  segments,
+  handleAddAnalysis,
 }: SelectRangeProps) => {
-  const [isAddingAnalysis, setIsAddingAnalysis] = useState(false);
-
-  const handleAddAnalysis = () => {
-    posthog.capture("add_analysis_selected_range_button");
-    setIsAddingAnalysis(true);
-  };
-
   const handleTimeRangeChange = (field: "start" | "end", value: number) => {
     const newRange = { ...selectedRange };
     if (field === "start") {
@@ -84,15 +72,6 @@ const SelectRange = ({
       <Button size="sm" onClick={handleAddAnalysis}>
         Add
       </Button>
-
-      <AddAnalysisModal
-        open={isAddingAnalysis}
-        onOpenChange={setIsAddingAnalysis}
-        selectedRange={selectedRange}
-        duration={duration}
-        segments={segments}
-        onAddAnalysis={onAddAnalysis}
-      />
 
       <Button
         onClick={handleCancelRangeSelection}

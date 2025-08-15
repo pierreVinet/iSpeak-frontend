@@ -49,6 +49,9 @@ const FileUploadProvider = ({ children }: { children: React.ReactNode }) => {
   const [analysisSegments, setAnalysisSegments] = useState<AnalysisSegment[]>(
     []
   );
+  const [editingSegment, setEditingSegment] = useState<AnalysisSegment | null>(
+    null
+  );
   const form = useForm<FormSessionSmallData>({
     resolver: zodResolver(fileInfoFormSchema),
     defaultValues: {
@@ -298,6 +301,7 @@ const FileUploadProvider = ({ children }: { children: React.ReactNode }) => {
     setJobId(null);
     setAnalysisSegments([]);
     setValidationErrors([]);
+    setEditingSegment(null);
     setStep(1);
     setActiveTab("file-info");
     form.reset();
@@ -351,6 +355,8 @@ const FileUploadProvider = ({ children }: { children: React.ReactNode }) => {
         setDuration,
         analysisSegments,
         setAnalysisSegments,
+        editingSegment,
+        setEditingSegment,
       }}
     >
       {children}

@@ -12,7 +12,6 @@ import { TabsContent } from "@/components/ui/tabs";
 import { ArrowLeft } from "lucide-react";
 import React, { useCallback, useState, useMemo, useEffect } from "react";
 import WaveSurfer from "./wave-surfer";
-import SelectRange from "./select-range";
 import AnalysisSegments from "./analysis-segments";
 import { useFileUpload } from "@/contexts/file-upload";
 import {
@@ -46,6 +45,8 @@ const TabsAnalysis = ({
     setDuration,
     setAnalysisSegments,
     analysisSegments,
+    editingSegment,
+    setEditingSegment,
   } = useFileUpload();
 
   // Memoize the audio URL to prevent creating new URLs on every render
@@ -238,6 +239,8 @@ const TabsAnalysis = ({
         setSelectedRange={setSelectedRange}
         handleCancelRangeSelection={handleCancelRangeSelection}
         duration={duration}
+        editingSegment={editingSegment}
+        setEditingSegment={setEditingSegment}
       />
 
       {/* Action Buttons */}

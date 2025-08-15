@@ -84,6 +84,10 @@ export type FileUploadContext = {
   setDuration: React.Dispatch<React.SetStateAction<number>>;
   analysisSegments: AnalysisSegment[];
   setAnalysisSegments: React.Dispatch<React.SetStateAction<AnalysisSegment[]>>;
+  editingSegment: AnalysisSegment | null;
+  setEditingSegment: React.Dispatch<
+    React.SetStateAction<AnalysisSegment | null>
+  >;
 };
 
 export type ErrorCallback = (error: AudioAnalysisUseCaseError) => void;
@@ -161,12 +165,9 @@ export interface AnalysisSegment {
 export interface SelectRangeProps {
   selectedRange: RegionTimeRange;
   onRangeChange: (range: RegionTimeRange) => void;
-  onAddAnalysis: (
-    analysis: Omit<AnalysisSegment, "id" | "status" | "createdAt" | "updatedAt">
-  ) => void;
+  handleAddAnalysis: () => void;
   handleCancelRangeSelection: () => void;
   duration: number;
-  segments: AnalysisSegment[];
 }
 
 export interface AnalysisSegmentsProps {
@@ -181,6 +182,8 @@ export interface AnalysisSegmentsProps {
   ) => void;
   handleCancelRangeSelection: () => void;
   duration: number;
+  editingSegment?: AnalysisSegment | null;
+  setEditingSegment?: (segment: AnalysisSegment | null) => void;
 }
 
 // WaveSurfer with regions props
@@ -233,19 +236,33 @@ export interface TabsAnalysisProps {
 
 export interface AddAnalysisModalProps {
   open: boolean;
-  onOpenChange: (open: boolean) => void;
-  selectedRange: { start: number; end: number };
+  setOpen: (open: boolean) => void;
+  selectedRange: RegionTimeRange | null;
   duration: number;
   segments: AnalysisSegment[];
   onAddAnalysis: (analysis: {
     name: string;
     type: AnalysisType;
-    timeRange: { start: number; end: number };
+    timeRange: TimeRange;
     referenceData?: {
       sentences: string[];
       words: string[];
     };
   }) => void;
+  onUpdateAnalysis?: (
+    id: string,
+    analysis: {
+      name: string;
+      type: AnalysisType;
+      timeRange: { start: number; end: number };
+      referenceData?: {
+        sentences: string[];
+        words: string[];
+      };
+    }
+  ) => void;
+  editingSegment?: AnalysisSegment | null;
+  setEditingSegment?: (segment: AnalysisSegment | null) => void;
 }
 
 export type AnalysisSegmentsOptions = {

@@ -38,6 +38,7 @@ import type {
   AnalysisType,
   AnalysisSegment,
   AddAnalysisModalProps,
+  TimeRange,
 } from "@/types";
 import {
   cn,
@@ -58,13 +59,19 @@ type FormData = z.infer<typeof formAnalysisModalSchema>;
 
 export function AddAnalysisModal({
   open,
-  onOpenChange,
+  setOpen,
   selectedRange,
   duration,
   segments,
   onAddAnalysis,
+  onUpdateAnalysis,
+  editingSegment,
+  setEditingSegment,
 }: AddAnalysisModalProps) {
   const [hasUserEditedName, setHasUserEditedName] = useState(false);
+  const isEditMode = !!editingSegment;
+
+  const timeRange = isEditMode ? editingSegment?.timeRange : selectedRange;
 
   const form = useForm<FormData>({
     resolver: zodResolver(formAnalysisModalSchema),
@@ -115,29 +122,71 @@ export function AddAnalysisModal({
 
   // Reset form and set default values when modal opens
   useEffect(() => {
-    if (open && !hasUserEditedName) {
-      const defaultName = generateAnalysisName(watchedType);
-      form.reset({
-        name: defaultName,
-        type: watchedType,
-        referenceType: "words",
-        referenceWords: "",
-        referenceSentences: "",
-      });
+    if (open) {
+      if (isEditMode) {
+        // Populate form with existing segment data
+        const referenceWords =
+          editingSegment.referenceData?.words?.join(", ") || "";
+        const referenceSentences =
+          editingSegment.referenceData?.sentences?.join(". ") || "";
+        form.reset({
+          name: editingSegment.name,
+          type: editingSegment.type,
+          referenceType: referenceWords
+            ? "words"
+            : referenceSentences
+            ? "sentences"
+            : "words",
+          referenceWords,
+          referenceSentences,
+        });
+        setHasUserEditedName(true); // Prevent auto-generation in edit mode
+      }
     }
-  }, [open, watchedType, segments, form, hasUserEditedName]);
+  }, [open, form, isEditMode, editingSegment]);
+
+  useEffect(() => {
+    if (open) {
+      if (!hasUserEditedName && !isEditMode) {
+        // Create mode - generate default name
+        const defaultName = generateAnalysisName(watchedType);
+        form.reset({
+          name: defaultName,
+          type: watchedType,
+          referenceType: "words",
+          referenceWords: "",
+          referenceSentences: "",
+        });
+      }
+    }
+  }, [open, watchedType, form, hasUserEditedName]);
 
   // Get time validation error
-  const timeError = validateTimeRange(selectedRange, duration);
+  const timeError = validateTimeRange(timeRange, duration);
+
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      form.reset();
+      setHasUserEditedName(false);
+      if (isEditMode) {
+        setEditingSegment?.(null);
+      }
+    }
+    setOpen(open);
+  };
 
   const onSubmit = (data: FormData) => {
-    posthog.capture("add_analysis_modal_submit", {
-      name: data.name,
-      type: data.type,
-      referenceType: data.referenceType,
-      referenceWords: data.referenceWords,
-      referenceSentences: data.referenceSentences,
-    });
+    posthog.capture(
+      isEditMode ? "edit_analysis_modal_submit" : "add_analysis_modal_submit",
+      {
+        name: data.name,
+        type: data.type,
+        referenceType: data.referenceType,
+        referenceWords: data.referenceWords,
+        referenceSentences: data.referenceSentences,
+        isEditMode,
+      }
+    );
 
     if (timeError) return;
 
@@ -159,31 +208,43 @@ export function AddAnalysisModal({
       }
     }
 
-    onAddAnalysis({
+    const analysisData = {
       name: data.name.trim(),
       type: data.type,
-      timeRange: selectedRange,
+      timeRange: timeRange as TimeRange,
       referenceData,
-    });
+    };
+
+    if (isEditMode && editingSegment && onUpdateAnalysis) {
+      console.log("isEditMode", isEditMode, "editingSegment", editingSegment);
+      onUpdateAnalysis(editingSegment.id, analysisData);
+    } else {
+      console.log("isEditMode", isEditMode);
+      onAddAnalysis(analysisData);
+    }
 
     handleClose();
   };
 
   const handleClose = () => {
-    form.reset();
-    setHasUserEditedName(false);
-    onOpenChange(false);
+    handleOpenChange(false);
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Add New Analysis</DialogTitle>
+          <DialogTitle>
+            {isEditMode ? "Edit Analysis" : "Add New Analysis"}
+          </DialogTitle>
           <DialogDescription>
-            {formatTime(selectedRange.start)} - {formatTime(selectedRange.end)}{" "}
-            (Duration:{" "}
-            {formatTime(selectedRange.end - selectedRange.start, true)})
+            {timeRange &&
+              formatTime(timeRange.start) +
+                " - " +
+                formatTime(timeRange.end) +
+                " (Duration: " +
+                formatTime(timeRange.end - timeRange.start, true) +
+                ")"}
           </DialogDescription>
         </DialogHeader>
 
@@ -377,7 +438,7 @@ export function AddAnalysisModal({
                   type="submit"
                   disabled={!form.formState.isValid || !!timeError}
                 >
-                  Add
+                  {isEditMode ? "Update" : "Add"}
                 </Button>
               </div>
             </DialogFooter>

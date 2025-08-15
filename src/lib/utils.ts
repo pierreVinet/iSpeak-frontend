@@ -130,9 +130,10 @@ export const validateTimeMinMax = (
  * @returns True if the time range is valid, false otherwise
  */
 export const validateTimeRange: (
-  selectedRange: TimeRange,
+  selectedRange: TimeRange | null,
   duration: number
 ) => string | null = (selectedRange, duration) => {
+  if (!selectedRange) return null;
   if (selectedRange.start < 0) {
     return "Start time cannot be negative";
   } else if (selectedRange.start > duration) {
