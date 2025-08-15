@@ -27,7 +27,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { CornerDownLeft, HelpCircle } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Check, CornerDownLeft, HelpCircle } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -65,7 +66,7 @@ export function AddAnalysisModal({
     resolver: zodResolver(formAnalysisModalSchema),
     defaultValues: {
       name: "",
-      type: "intelligibility",
+      type: "acoustic",
       referenceType: "words",
       referenceWords: "",
       referenceSentences: "",
@@ -185,7 +186,7 @@ export function AddAnalysisModal({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 py-4"
+            className="space-y-8 py-4"
           >
             <FormField
               control={form.control}
@@ -212,47 +213,40 @@ export function AddAnalysisModal({
               control={form.control}
               name="type"
               render={({ field }) => (
-                <FormItem className="space-y-3">
-                  <FormLabel>Type</FormLabel>
+                <FormItem className="">
+                  <FormLabel>
+                    Type{" "}
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <HelpCircle className="h-4 w-4 text-muted-foreground cursor-default" />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-xs">
+                        <span className="font-bold">Acoustic: </span>{" "}
+                        {analysisTypeDescriptions.acoustic} <br /> <br />
+                        <span className="font-bold">Intelligibility: </span>
+                        {analysisTypeDescriptions.intelligibility}
+                      </TooltipContent>
+                    </Tooltip>
+                  </FormLabel>
                   <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
+                    <Tabs
                       value={field.value}
-                      className="flex flex-col space-y-1"
+                      onValueChange={field.onChange}
+                      className="w-full"
                     >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="acoustic" id="acoustic" />
-                        <Label htmlFor="acoustic">Acoustic Analysis</Label>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            {analysisTypeDescriptions.acoustic}
-                          </TooltipContent>
-                        </Tooltip>
-                        {/* <ComingSoonBadge /> */}
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem
-                          value="intelligibility"
-                          id="intelligibility"
+                      <TabsList className="grid w-full grid-cols-2 h-full max-h-fit">
+                        <AnalysisTypeTab
+                          value="acoustic"
+                          title="Acoustic Analysis"
+                          isActive={watchedType === "acoustic"}
                         />
-                        <Label htmlFor="intelligibility">
-                          Intelligibility Assessment (FDA2)
-                        </Label>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p className="max-w-xs">
-                              {analysisTypeDescriptions.intelligibility}
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </div>
-                    </RadioGroup>
+                        <AnalysisTypeTab
+                          value="intelligibility"
+                          title="Intelligibility Assessment (FDA2)"
+                          isActive={watchedType === "intelligibility"}
+                        />
+                      </TabsList>
+                    </Tabs>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -379,5 +373,25 @@ const PonctuationBadge = ({ ponctuation }: { ponctuation: string }) => {
     <span className="inline  px-2  ml-1 bg-muted p-1 rounded-sm">
       {ponctuation}
     </span>
+  );
+};
+
+const AnalysisTypeTab = ({
+  value,
+  title,
+  isActive,
+}: {
+  value: AnalysisType;
+  title: string;
+  isActive: boolean;
+}) => {
+  return (
+    <TabsTrigger
+      value={value}
+      className="flex items-center gap-2 cursor-pointer py-2"
+    >
+      {isActive && <Check className="text-primary" />}
+      <div className="text-wrap">{title}</div>
+    </TabsTrigger>
   );
 };
