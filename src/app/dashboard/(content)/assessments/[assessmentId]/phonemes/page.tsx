@@ -1,6 +1,7 @@
 import PhonemeContent from "@/components/assessments/intelligibility/phoneme-content";
 import PhonemeHeader from "@/components/assessments/intelligibility/phoneme-header";
 import NotFoundAssessment from "@/components/assessments/not-found-assessment";
+import PhonemeChart from "@/components/phonemic/phoneme-chart";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -110,6 +111,11 @@ const PhonemesPage = async ({
         </div>
 
         <div className="w-full flex flex-col gap-6">
+          {/* Phonemic Chart */}
+          <Card className="p-6">
+            <PhonemeChart />
+          </Card>
+
           <Card className="">
             <PhonemeHeader
               title="Phonemes Errors"

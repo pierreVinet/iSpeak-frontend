@@ -1,0 +1,274 @@
+{
+  "vowels": {
+    "monophthongs": [
+      {
+        "phonemic": "i:",
+        "phonetic": "iː",
+        "example": "sheep",
+        "underline": "ee"
+      },
+      {
+        "phonemic": "I",
+        "phonetic": "ɪ",
+        "example": "ship",
+        "underline": "i"
+      },
+      {
+        "phonemic": "ʊ",
+        "phonetic": "ʊ",
+        "example": "good",
+        "underline": "oo"
+      },
+      {
+        "phonemic": "u:",
+        "phonetic": "uː",
+        "example": "shoot",
+        "underline": "oo"
+      },
+      {
+        "phonemic": "e",
+        "phonetic": "e",
+        "example": "bed",
+        "underline": "e"
+      },
+      {
+        "phonemic": "ə",
+        "phonetic": "ə",
+        "example": "teacher",
+        "underline": "er"
+      },
+      {
+        "phonemic": "3:",
+        "phonetic": "ɜː",
+        "example": "bird",
+        "underline": "ir"
+      },
+      {
+        "phonemic": "ɔ:",
+        "phonetic": "ɔː",
+        "example": "door",
+        "underline": "oor"
+      },
+      {
+        "phonemic": "æ",
+        "phonetic": "æ",
+        "example": "cat",
+        "underline": "a"
+      },
+      {
+        "phonemic": "ʌ",
+        "phonetic": "ʌ",
+        "example": "up",
+        "underline": "u"
+      },
+      {
+        "phonemic": "ɑ:",
+        "phonetic": "ɑː",
+        "example": "far",
+        "underline": "ar"
+      },
+      {
+        "phonemic": "ɒ",
+        "phonetic": "ɒ",
+        "example": "on",
+        "underline": "o"
+      }
+    ],
+    "diphthongs": [
+      {
+        "phonemic": "Iə",
+        "phonetic": "ɪə",
+        "example": "here",
+        "underline": "ere"
+      },
+      {
+        "phonemic": "eI",
+        "phonetic": "eɪ",
+        "example": "wait",
+        "underline": "ai"
+      },
+      {
+        "phonemic": "ʊə",
+        "phonetic": "ʊə",
+        "example": "tourist",
+        "underline": "our"
+      },
+      {
+        "phonemic": "ɔI",
+        "phonetic": "ɔɪ",
+        "example": "boy",
+        "underline": "oy"
+      },
+      {
+        "phonemic": "əʊ",
+        "phonetic": "əʊ",
+        "example": "show",
+        "underline": "ow"
+      },
+      {
+        "phonemic": "eə",
+        "phonetic": "eə",
+        "example": "hair",
+        "underline": "air"
+      },
+      {
+        "phonemic": "aI",
+        "phonetic": "aɪ",
+        "example": "my",
+        "underline": "y"
+      },
+      {
+        "phonemic": "aʊ",
+        "phonetic": "aʊ",
+        "example": "cow",
+        "underline": "ow"
+      }
+    ]
+  },
+  "consonants": [
+    {
+      "phonemic": "p",
+      "phonetic": "p",
+      "example": "pea",
+      "underline": "p"
+    },
+    {
+      "phonemic": "b",
+      "phonetic": "b",
+      "example": "boat",
+      "underline": "b"
+    },
+    {
+      "phonemic": "t",
+      "phonetic": "t",
+      "example": "tea",
+      "underline": "t"
+    },
+    {
+      "phonemic": "d",
+      "phonetic": "d",
+      "example": "dog",
+      "underline": "d"
+    },
+    {
+      "phonemic": "tʃ",
+      "phonetic": "tʃ",
+      "example": "cheese",
+      "underline": "ch"
+    },
+    {
+      "phonemic": "dʒ",
+      "phonetic": "dʒ",
+      "example": "June",
+      "underline": "J"
+    },
+    {
+      "phonemic": "k",
+      "phonetic": "k",
+      "example": "car",
+      "underline": "c"
+    },
+    {
+      "phonemic": "g",
+      "phonetic": "g",
+      "example": "go",
+      "underline": "g"
+    },
+    {
+      "phonemic": "f",
+      "phonetic": "f",
+      "example": "fly",
+      "underline": "f"
+    },
+    {
+      "phonemic": "v",
+      "phonetic": "v",
+      "example": "video",
+      "underline": "v"
+    },
+    {
+      "phonemic": "θ",
+      "phonetic": "θ",
+      "example": "think",
+      "underline": "th"
+    },
+    {
+      "phonemic": "ð",
+      "phonetic": "ð",
+      "example": "this",
+      "underline": "th"
+    },
+    {
+      "phonemic": "s",
+      "phonetic": "s",
+      "example": "see",
+      "underline": "s"
+    },
+    {
+      "phonemic": "z",
+      "phonetic": "z",
+      "example": "zoo",
+      "underline": "z"
+    },
+    {
+      "phonemic": "ʃ",
+      "phonetic": "ʃ",
+      "example": "shall",
+      "underline": "sh"
+    },
+    {
+      "phonemic": "ʒ",
+      "phonetic": "ʒ",
+      "example": "television",
+      "underline": "s"
+    },
+    {
+      "phonemic": "m",
+      "phonetic": "m",
+      "example": "man",
+      "underline": "m"
+    },
+    {
+      "phonemic": "n",
+      "phonetic": "n",
+      "example": "now",
+      "underline": "n"
+    },
+    {
+      "phonemic": "ŋ",
+      "phonetic": "ŋ",
+      "example": "sing",
+      "underline": "ng"
+    },
+    {
+      "phonemic": "h",
+      "phonetic": "h",
+      "example": "hat",
+      "underline": "h"
+    },
+    {
+      "phonemic": "l",
+      "phonetic": "l",
+      "example": "love",
+      "underline": "l"
+    },
+    {
+      "phonemic": "r",
+      "phonetic": "r",
+      "example": "red",
+      "underline": "r"
+    },
+    {
+      "phonemic": "w",
+      "phonetic": "w",
+      "example": "wet",
+      "underline": "w"
+    },
+    {
+      "phonemic": "j",
+      "phonetic": "j",
+      "example": "yes",
+      "underline": "y"
+    }
+  ]
+}
