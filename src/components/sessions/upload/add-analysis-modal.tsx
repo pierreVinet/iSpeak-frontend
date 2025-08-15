@@ -259,25 +259,27 @@ export function AddAnalysisModal({
                   control={form.control}
                   name="referenceType"
                   render={({ field }) => (
-                    <FormItem className="space-y-3">
+                    <FormItem className="">
                       <FormLabel>Reference Type</FormLabel>
                       <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
+                        <Tabs
                           value={field.value}
-                          className="flex flex-col space-y-1"
+                          onValueChange={field.onChange}
+                          className="w-full"
                         >
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="words" id="words" />
-                            <Label htmlFor="words">Reference Words</Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="sentences" id="sentences" />
-                            <Label htmlFor="sentences">
-                              Reference Sentences
-                            </Label>
-                          </div>
-                        </RadioGroup>
+                          <TabsList className="grid w-full grid-cols-2 h-full max-h-fit">
+                            <AnalysisTypeTab
+                              value="words"
+                              title="Reference Words"
+                              isActive={watchedReferenceType === "words"}
+                            />
+                            <AnalysisTypeTab
+                              value="sentences"
+                              title="Reference Sentences"
+                              isActive={watchedReferenceType === "sentences"}
+                            />
+                          </TabsList>
+                        </Tabs>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -381,7 +383,7 @@ const AnalysisTypeTab = ({
   title,
   isActive,
 }: {
-  value: AnalysisType;
+  value: string;
   title: string;
   isActive: boolean;
 }) => {
